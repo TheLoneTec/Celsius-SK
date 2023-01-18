@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ModMetaData>
+	<name>Celsius</name>
+	<author>Garwel</author>
+	<url>https://github.com/GarwelGarwel/Celsius</url>
+	<packageId>Garwel.Celsius</packageId>
+	<supportedVersions>
+		<li>1.3</li>
+		<li>1.4</li>
+	</supportedVersions>
+	<description>Celsius adds realistic simulation of thermodynamics to the game.
+
+Main features:
+
+- Temperature is tracked and accurately represented for every map cell (loosely) based on real-world thermal properties.
+
+- Water can freeze and ice can melt.
+
+- Flammable things may spontaneously ignite when it gets extremely hot.
+
+Celsius opens up many new challenges and ways to play RimWorld. Forgo houses and warm colonists at campfires, melt ice sheets or unleash deadly firestorms on your enemies!
+
+Some vanilla shortcuts and assumptions have been removed, which affected balance of many things (e.g. the size of rooms heated by a firplace).
+
+I worked hard to optimize the mod, and it shouldn't seriously slow down the game. You may disable or tweak its features to your liking.
+
+You can install it in an ongoing game. Removal mid-game is also theoretically possible but untested.
+
+DLCs are supported. Mods support is an ongoing effort. Mod authors can provide patches on their side or submit PRs in Github.
+
+For issue reports, suggestions and pull requests, visit Github: https://github.com/GarwelGarwel/Celsius
+
+Dependencies:
+- Harmony
+- XML Extensions
+
+Currently supported mods:
+- Insulation
+- Primitive Workbenches
+- Vanilla Furniture Extended: base mod, Architect, Medical, Security
+- Windows
+
+Conflicts:
+- Any mod that alters temperature-related things in the game is likely to cause issues. 
+- Heat Map, Proxy Heat are not needed, because Celsius does everything these mod do (and much more)</description>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+		<li>
+			<packageId>imranfish.xmlextensions</packageId>
+			<displayName>XML Extensions</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2574315206</steamWorkshopUrl>
+			<downloadUrl>https://github.com/15adhami/XmlExtensions/releases/latest</downloadUrl>
+		</li>
+	</modDependencies>
+	<loadAfter>
+		<li>brrainz.harmony</li>
+		<li>Ludeon.RimWorld</li>
+		<li>imranfish.xmlextensions</li>
+	</loadAfter>
+</ModMetaData>

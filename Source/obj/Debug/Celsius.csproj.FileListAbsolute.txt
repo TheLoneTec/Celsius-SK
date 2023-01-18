@@ -1,0 +1,14 @@
+D:\Steam\steamapps\common\RimWorld\Mods\Celsius\Assemblies\Celsius.dll
+D:\Steam\steamapps\common\RimWorld\Mods\Celsius\Source\obj\Debug\Celsius.csproj.AssemblyReference.cache
+D:\Steam\steamapps\common\RimWorld\Mods\Celsius\Source\obj\Debug\Celsius.csproj.CoreCompileInputs.cache
+D:\Steam\steamapps\common\RimWorld\Mods\Celsius\Source\obj\Debug\Celsius.dll
+C:\Steam\steamapps\common\RimWorld\Mods\Celsius\Assemblies\Celsius.dll
+C:\Steam\steamapps\common\RimWorld\Mods\Celsius\Source\obj\Debug\Celsius.csproj.AssemblyReference.cache
+C:\Steam\steamapps\common\RimWorld\Mods\Celsius\Source\obj\Debug\Celsius.csproj.CoreCompileInputs.cache
+C:\Steam\steamapps\common\RimWorld\Mods\Celsius\Source\obj\Debug\Celsius.dll
+C:\Steam\steamapps\common\RimWorld\Mods\Celsius\1.4\Assemblies\Celsius.dll
+D:\AlternativeSteamVersions\Celsius\1.4\Assemblies\Celsius.dll
+D:\AlternativeSteamVersions\Celsius\Source\obj\Debug\Celsius.csproj.AssemblyReference.cache
+D:\AlternativeSteamVersions\Celsius\Source\obj\Debug\Celsius.csproj.CoreCompileInputs.cache
+D:\AlternativeSteamVersions\Celsius\Source\obj\Debug\Celsius.dll
+D:\AlternativeSteamVersions\Celsius\Source\obj\Debug\Celsius.csproj.CopyComplete

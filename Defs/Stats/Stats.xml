@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Defs>
+
+	<StatDef>
+		<defName>HeatCapacity</defName>
+		<label>heat capacity</label>
+		<description>How slowly the object changes its temperature.</description>
+		<category>Basics</category>
+		<workerClass>Celsius.StatWorker_HeatCapacity</workerClass>
+		<hideAtValue>0</hideAtValue>
+		<showOnPawns>false</showOnPawns>
+		<showOnDefaultValue>false</showOnDefaultValue>
+		<displayPriorityInCategory>1400</displayPriorityInCategory>
+		<toStringStyle>FloatOne</toStringStyle>
+		<formatString>{0} kJ/C</formatString>
+		<defaultBaseValue>0</defaultBaseValue>
+		<minValue>0</minValue>
+	</StatDef>
+
+	<StatDef>
+		<defName>HeatConductivity</defName>
+		<label>heat conductivity</label>
+		<description>How much energy the object exchanges with surrounding air.</description>
+		<category>Basics</category>
+		<workerClass>Celsius.StatWorker_HeatConductivity</workerClass>
+		<hideAtValue>0</hideAtValue>
+		<showOnPawns>false</showOnPawns>
+		<showOnDefaultValue>false</showOnDefaultValue>
+		<displayPriorityInCategory>1398</displayPriorityInCategory>
+		<toStringStyle>FloatTwo</toStringStyle>
+		<formatString>{0} W/C</formatString>
+		<defaultBaseValue>0</defaultBaseValue>
+		<minValue>0</minValue>
+	</StatDef>
+
+	<StatDef>
+		<defName>IgnitionTemperature</defName>
+		<label>autoignition temperature</label>
+		<description>Minimum temperature when this thing ignites.</description>
+		<category>BasicsNonPawn</category>
+		<showOnPawns>false</showOnPawns>
+		<showOnDefaultValue>false</showOnDefaultValue>
+		<displayPriorityInCategory>2990</displayPriorityInCategory>
+		<toStringStyle>Temperature</toStringStyle>
+		<minifiedThingInherits>true</minifiedThingInherits>
+		<defaultBaseValue>0</defaultBaseValue>
+		<minValue>0</minValue>
+	</StatDef>
+
+	<!-- Custom -->
+
+	<StatDef>
+		<defName>WorkRateFactor</defName>
+		<label>unsafe temeprature work rate</label>
+		<description>The speed at which this building operates when outside safe temperature.</description>
+		<category>Building</category>
+		<defaultBaseValue>0.7</defaultBaseValue>
+		<minValue>0</minValue>
+		<toStringStyle>FloatTwo</toStringStyle>
+		<showOnNonWorkTables>false</showOnNonWorkTables>
+		<displayPriorityInCategory>3001</displayPriorityInCategory>
+	</StatDef>
+
+	<StatDef>
+		<defName>MinTemp</defName>
+		<label>minimum workable temperature.</label>
+		<description>The lowest temperature this building can operate efficiently at.</description>
+		<category>Building</category>
+		<defaultBaseValue>9</defaultBaseValue>
+		<toStringStyle>Temperature</toStringStyle>
+		<showOnNonWorkTables>false</showOnNonWorkTables>
+		<displayPriorityInCategory>3002</displayPriorityInCategory>
+	</StatDef>
+
+	<StatDef>
+		<defName>MaxTemp</defName>
+		<label>maximum workable temperature.</label>
+		<description>The highest temperature this building can operate efficiently at.</description>
+		<category>Building</category>
+		<defaultBaseValue>35</defaultBaseValue>
+		<toStringStyle>Temperature</toStringStyle>
+		<showOnNonWorkTables>false</showOnNonWorkTables>
+		<displayPriorityInCategory>3003</displayPriorityInCategory>
+	</StatDef>
+
+</Defs>
