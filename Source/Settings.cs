@@ -40,7 +40,7 @@ namespace Celsius
         {
             Scribe_Values.Look(ref UseVanillaTemperatureColors, "UseVanillaTemperatureColors");
             Scribe_Values.Look(ref ShowTemperatureTooltip, "ShowTemperatureTooltip", true);
-            Scribe_Values.Look(ref FreezingAndMeltingEnabled, "FreezingAndMeltingEnabled", true);
+            Scribe_Values.Look(ref FreezingAndMeltingEnabled, "FreezingAndMeltingEnabled", false);
             Scribe_Values.Look(ref AutoignitionEnabled, "AutoignitionEnabled", true);
             Scribe_Values.Look(ref HeatConductivityMultiplier, "HeatConductivityMultiplier", 1);
             Scribe_Values.Look(ref ConvectionConductivityEffect, "ConvectionConductivityEffect", ConvectionConductivityEffect_Default);
@@ -56,7 +56,7 @@ namespace Celsius
         {
             UseVanillaTemperatureColors = false;
             ShowTemperatureTooltip = true;
-            FreezingAndMeltingEnabled = true;
+            FreezingAndMeltingEnabled = false;
             AutoignitionEnabled = true;
             HeatConductivityMultiplier = 1;
             HeatConductivityFactor = HeatConductivityMultiplier * HeatConductivityFactor_Base;

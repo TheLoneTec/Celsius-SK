@@ -34,8 +34,8 @@ namespace Celsius
                 AccessTools.PropertyGetter(typeof(Room), "Temperature"),
                 prefix: new HarmonyMethod(type.GetMethod("Room_Temperature_get")));
             harmony.Patch(
-                AccessTools.Method(typeof(StatPart_WorkTableTemperature), "Applies"),
-                prefix: new HarmonyMethod(type.GetMethod("Applies_Patch")));
+                AccessTools.Method($"RimWorld.StatPart_WorkTableTemperature:Applies", new Type[] { typeof(ThingDef), typeof(Map), typeof(IntVec3) }),
+                prefix: new HarmonyMethod(type.GetMethod($"Applies_Patch")));
             harmony.Patch(
                 AccessTools.Method($"Verse.GenTemperature:PushHeat", new Type[] { typeof(IntVec3), typeof(Map), typeof(float) }),
                 prefix: new HarmonyMethod(type.GetMethod($"GenTemperature_PushHeat")));
@@ -91,7 +91,7 @@ namespace Celsius
         }
 
         // Replaces Applies for workbench temperature check.
-        public static bool Applies_Patch(ref float __result, ThingDef tDef, Map map, IntVec3 c, StatPart_WorkTableTemperature __instance)
+        public static bool Applies_Patch(ThingDef tDef, Map map, IntVec3 c)
         {
             if (map == null || tDef.building == null)
                 return false;
@@ -118,13 +118,18 @@ namespace Celsius
             float minTemp = 9.0f;
             float maxTemp = 35.0f;
 
-            if (!tDef.statBases.Where(s => s.stat.defName == "MinTemp").EnumerableNullOrEmpty())
-                minTemp = tDef.statBases.Find(s => s.stat.defName == "MinTemp").value;
+            if (tDef.statBases != null)
+            {
+                if (!tDef.statBases.Where(s => s.stat.defName == "MinTemp").EnumerableNullOrEmpty())
+                    minTemp = tDef.statBases.Find(s => s.stat.defName == "MinTemp").value;
 
-            if (!tDef.statBases.Where(s => s.stat.defName == "MaxTemp").EnumerableNullOrEmpty())
-                maxTemp = tDef.statBases.Find(s => s.stat.defName == "MaxTemp").value;
+                if (!tDef.statBases.Where(s => s.stat.defName == "MaxTemp").EnumerableNullOrEmpty())
+                    maxTemp = tDef.statBases.Find(s => s.stat.defName == "MaxTemp").value;
+            }
 
             return (double)temperatureForCell < minTemp || (double)temperatureForCell > maxTemp;
+
+
         }
 
         // Replaces GenTemperature.PushHeat(IntVec3, Map, float) to change temperature at the specific cell instead of the whole room
