@@ -1,7 +1,0 @@
-C:\Steam\steamapps\common\RimWorld\Mods\Celsius\Source\bin\Release\Celsius.dll
-C:\Steam\steamapps\common\RimWorld\Mods\Celsius\Source\bin\Release\Celsius.pdb
-C:\Steam\steamapps\common\RimWorld\Mods\Celsius\Source\obj\Release\Celsius.csproj.AssemblyReference.cache
-C:\Steam\steamapps\common\RimWorld\Mods\Celsius\Source\obj\Release\Celsius.csproj.CoreCompileInputs.cache
-C:\Steam\steamapps\common\RimWorld\Mods\Celsius\Source\obj\Release\Celsius.dll
-C:\Steam\steamapps\common\RimWorld\Mods\Celsius\Assemblies\Celsius.dll
-C:\Steam\steamapps\common\RimWorld\Mods\Celsius\1.4\Assemblies\Celsius.dll

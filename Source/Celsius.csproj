@@ -17,7 +17,7 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\1.4\Assemblies\</OutputPath>
+    <OutputPath>.\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -36,14 +36,10 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>E:\Rimworld_Assemblies\Hardcore-SK-Source-master\Hardcore-SK-Source-master\R1.4\Assemblies\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\Users\kacey\Documents\GitHub\PacasForks\Hardcore-SK-Source\R1.4\Assemblies\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Core_SK">
-      <HintPath>E:\Users\kacey\Documents\GitHub\PacasForks\Hardcore-SK-Source\R1.4\Assemblies\Core_SK.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenTheWindows">
-      <HintPath>References\OpenTheWindows.dll</HintPath>
+      <HintPath>..\..\..\..\Users\kacey\Documents\GitHub\PacasForks\Hardcore-SK-Source\R1.4\Assemblies\Core_SK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,17 +50,19 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>E:\Rimworld_Assemblies\Hardcore-SK-Source-master\Hardcore-SK-Source-master\R1.4\Assemblies\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\..\Users\kacey\Documents\GitHub\PacasForks\Hardcore-SK-Source\R1.4\Assemblies\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>E:\Rimworld_Assemblies\Hardcore-SK-Source-master\Hardcore-SK-Source-master\R1.4\Assemblies\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>..\..\..\..\Users\kacey\Documents\GitHub\PacasForks\Hardcore-SK-Source\R1.4\Assemblies\UnityEngine.IMGUIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CellThermalProps.cs" />
-    <Compile Include="CellUtility.cs" />
+    <Compile Include="FreezeMeltUtility.cs" />
+    <Compile Include="StatPart_Wetness.cs" />
+    <Compile Include="StatPart_WindSpeed.cs" />
+    <Compile Include="ThermalProps.cs" />
     <Compile Include="CelsiusMod.cs" />
     <Compile Include="CompThermal.cs" />
     <Compile Include="DataUtility.cs" />

@@ -1,44 +1,91 @@
-﻿using OpenTheWindows;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace Celsius
 {
     public class CompThermal : ThingComp
     {
-        [Unsaved]
-        CellThermalProps thermalProps;
+        bool isOpen;
 
-        [Unsaved]
-        CellThermalProps thermalPropsOpen;
+        ThermalProps thermalProps;
 
-        bool IsOpen => (parent is Building_Door door && door.Open) || (parent is Building_Window && (parent as Building_Window).venting) || (parent is Building_Vent && parent.GetComp<CompFlickable>()?.SwitchIsOn == true || (parent is SK.Building_ClosableVent && parent.GetComp<CompFlickable>()?.SwitchIsOn == true));
-
-        CellThermalProps GetCachedThermalProps(bool open) => open ? thermalPropsOpen : thermalProps;
-
-        public CellThermalProps ThermalProperties
+        public bool IsOpen
         {
-            get
+            get => isOpen;
+            set
             {
-                // Checking if thermal props already cached
-                bool open = IsOpen;
-                CellThermalProps cachedProps = GetCachedThermalProps(open);
-                if (cachedProps != null)
-                    return cachedProps;
-
-                ThingThermalProperties thingThermalProps = parent.def.GetModExtension<ThingThermalProperties>();
-                StuffThermalProperties stuffProps = thingThermalProps.volume > 0
-                    ? parent.GetUnderlyingStuff()?.GetModExtension<StuffThermalProperties>() ?? parent.def.GetModExtension<StuffThermalProperties>()
-                    : null;
-                if (open)
-                    thermalPropsOpen = thingThermalProps.GetCellThermalProps(stuffProps, true);
-                else thermalProps = thingThermalProps.GetCellThermalProps(stuffProps, false);
-                return GetCachedThermalProps(open);
+                isOpen = value;
+                Reset();
             }
         }
 
+        public ThingThermalProperties ThingThermalProperties => parent.def.GetModExtension<ThingThermalProperties>();
+
+        public StuffThermalProperties StuffThermalProperties =>
+            ThingThermalProperties.volume > 0
+            ? parent.Stuff?.GetModExtension<StuffThermalProperties>() ?? parent.def.GetModExtension<StuffThermalProperties>()
+            : null;
+
+        public ThermalProps ThermalProperties => thermalProps ?? (thermalProps = ThingThermalProperties.GetThermalProps(StuffThermalProperties, IsOpen));
+
         internal static bool ShouldApplyTo(ThingDef thingDef) => thingDef.category == ThingCategory.Building && thingDef.HasModExtension<ThingThermalProperties>();
 
-        internal void Reset() => thermalProps = thermalPropsOpen = null;
+        internal void Reset() => thermalProps = ThingThermalProperties.GetThermalProps(StuffThermalProperties, IsOpen);
+
+        public override void Initialize(CompProperties props)
+        {
+            base.Initialize(props);
+            IsOpen |= (parent is Building_Door door && door.Open) || (parent is Building_Vent && parent.GetComp<CompFlickable>()?.SwitchIsOn == true);
+        }
+
+        public override void PostExposeData()
+        {
+            Scribe_Values.Look(ref isOpen, "isOpen");
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+                Reset();
+        }
+
+        public override void ReceiveCompSignal(string signal)
+        {
+            // Vents
+            if (parent is Building_Vent)
+                switch (signal.ToLowerInvariant())
+                {
+                    case "flickedon":
+                        IsOpen = true;
+                        break;
+
+                    case "flickedoff":
+                        IsOpen = false;
+                        break;
+                }
+
+            // Windows mod
+            else if (parent.GetType().FullName == "OpenTheWindows.Building_Window")
+                switch (signal.ToLowerInvariant())
+                {
+                    case "airon":
+                    case "bothon":
+                        IsOpen = true;
+                        break;
+
+                    case "airoff":
+                    case "bothoff":
+                        IsOpen = false;
+                        break;
+                }
+
+            else if (parent.GetType().FullName == "SK.Building_ClosableVent")
+                switch (signal.ToLowerInvariant())
+                {
+                    case "flickedon":
+                        IsOpen = true;
+                        break;
+
+                    case "flickedoff":
+                        IsOpen = false;
+                        break;
+                }
+        }
     }
 }
