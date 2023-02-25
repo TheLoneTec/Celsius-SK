@@ -125,7 +125,7 @@ namespace Celsius
             {
                 if (tDef.hasInteractionCell)
                 {
-                    temperatureForCell = GenTemperature.GetTemperatureForCell(c + tDef.interactionCellOffset, map);
+                    temperatureForCell = GenTemperature.GetTemperatureForCell(ThingUtility.InteractionCell(tDef.interactionCellOffset, c, c.GetFirstThing(map, tDef).Rotation), map);
                 }
                 else
                 {

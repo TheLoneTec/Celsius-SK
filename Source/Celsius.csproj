@@ -36,10 +36,10 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\Users\kacey\Documents\GitHub\PacasForks\Hardcore-SK-Source\R1.4\Assemblies\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\Hardcore-SK-Source\R1.4\Assemblies\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Core_SK">
-      <HintPath>..\..\..\..\Users\kacey\Documents\GitHub\PacasForks\Hardcore-SK-Source\R1.4\Assemblies\Core_SK.dll</HintPath>
+      <HintPath>..\..\Hardcore-SK-Source\R1.4\Assemblies\Core_SK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,11 +50,11 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\Users\kacey\Documents\GitHub\PacasForks\Hardcore-SK-Source\R1.4\Assemblies\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\Hardcore-SK-Source\R1.4\Assemblies\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\..\Users\kacey\Documents\GitHub\PacasForks\Hardcore-SK-Source\R1.4\Assemblies\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>..\..\Hardcore-SK-Source\R1.4\Assemblies\UnityEngine.IMGUIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
