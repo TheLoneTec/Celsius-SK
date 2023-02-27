@@ -35,12 +35,14 @@ namespace Celsius
             harmony.Patch(
                 AccessTools.PropertyGetter(typeof(Room), "Temperature"),
                 prefix: new HarmonyMethod(type.GetMethod("Room_Temperature_get")));
+            #region HSK Added
             harmony.Patch(
                 AccessTools.Method($"RimWorld.StatPart_WorkTableTemperature:TransformValue"),
                 prefix: new HarmonyMethod(type.GetMethod("TransformValue_Patch")));
             harmony.Patch(
                 AccessTools.Method($"RimWorld.StatPart_WorkTableTemperature:Applies", new Type[] { typeof(ThingDef), typeof(Map), typeof(IntVec3) }),
                 prefix: new HarmonyMethod(type.GetMethod($"Applies_Patch")));
+            #endregion
             harmony.Patch(
                 AccessTools.Method("Verse.GenTemperature:PushHeat", new Type[] { typeof(IntVec3), typeof(Map), typeof(float) }),
                 prefix: new HarmonyMethod(type.GetMethod("GenTemperature_PushHeat")));
@@ -94,6 +96,24 @@ namespace Celsius
         // Replaces GenTemperature.TryGetDirectAirTemperatureForCell by providing cell-specific temperature
         public static bool GenTemperature_TryGetDirectAirTemperatureForCell(ref bool __result, IntVec3 c, Map map, out float temperature)
         {
+            Thing thing = c.GetThingList(map).Find(b => b.def.category == ThingCategory.Building && b.def.altitudeLayer == AltitudeLayer.Building
+            && b.def.passability != Traversability.Standable && b.def.Size != null && b.def.size.x + b.def.size.z > 4);
+            if (thing != null)
+            {
+                float temp = 0;
+                int count = 0;
+                foreach (var cell in GenAdj.CellsOccupiedBy(thing))
+                {
+                    temp += cell.GetTemperatureForCell(map);
+                    count++;
+                }
+                if (count > 0)
+                {
+                    temperature = temp / count;
+                    __result = true;
+                    return false;
+                }
+            }
             temperature = c.GetTemperatureForCell(map);
             __result = true;
             return false;
