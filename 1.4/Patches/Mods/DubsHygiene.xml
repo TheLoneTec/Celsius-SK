@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Patch>
+
+	<!-- AirCon -->
+
+	<Operation Class="PatchOperationFindMod">
+	<mods>
+		<li>Dubs Bad Hygiene</li>
+	</mods>
+		<match Class="PatchOperationSequence">
+			<operations>
+			
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="AirConOutdoorUnit"]</xpath>
+				<value>
+					<building>
+						<buildingTags>
+							<li>CelsiusSK_EveryBuildingCellPlusOne</li>
+						</buildingTags>
+					</building>
+				</value>
+			</li>
+
+			</operations>
+		</match>
+	</Operation>
+
+</Patch>
