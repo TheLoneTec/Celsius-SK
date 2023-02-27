@@ -104,8 +104,17 @@ namespace Celsius
                 int count = 0;
                 switch (thing.def.building.buildingTags.Find(t => t.Contains("CelsiusSK_")))
                 {
-                    case "CelsiusSK_PrioOutdoor":
-                        temperature = map.mapTemperature.OutdoorTemp;
+                    case "CelsiusSK_PrioOutdoorOrRoom":
+                        if (c.IsInRoom(map))
+                        {
+                            TemperatureInfo tmp = new TemperatureInfo(map);
+                            temperature = tmp.GetRoomTemperature(c.GetRoom(map));
+                        }
+                        else
+                        {
+                            temperature = map.mapTemperature.OutdoorTemp;
+                        }
+
                         __result = true;
                         return false;
                     case "CelsiusSK_EveryBuildingCell":
