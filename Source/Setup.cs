@@ -97,16 +97,43 @@ namespace Celsius
         public static bool GenTemperature_TryGetDirectAirTemperatureForCell(ref bool __result, IntVec3 c, Map map, out float temperature)
         {
             Thing thing = c.GetThingList(map).Find(b => b.def.category == ThingCategory.Building && b.def.altitudeLayer == AltitudeLayer.Building
-            && b.def.passability != Traversability.Standable && b.def.Size != null && b.def.size.x + b.def.size.z > 4);
+            && b.def.passability != Traversability.Standable);
             if (thing != null)
             {
                 float temp = 0;
                 int count = 0;
-                foreach (var cell in GenAdj.CellsOccupiedBy(thing))
+                switch (thing.def.building.buildingTags.Find(t => t.Contains("CelsiusSK_")))
                 {
-                    temp += cell.GetTemperatureForCell(map);
-                    count++;
+                    case "CelsiusSK_PrioOutdoor":
+                        temperature = map.mapTemperature.OutdoorTemp;
+                        __result = true;
+                        return false;
+                    case "CelsiusSK_EveryBuildingCell":
+                        foreach (var cell in GenAdj.CellsOccupiedBy(thing))
+                        {
+                            temp += cell.GetTemperatureForCell(map);
+                            count++;
+                        }
+                        break;
+                    case "CelsiusSK_EveryBuildingCellPlusOne":
+                        foreach (var cell in GenAdj.CellsOccupiedBy(thing.Position, thing.Rotation, thing.def.Size + new IntVec2(1,1)))
+                        {
+                            temp += cell.GetTemperatureForCell(map);
+                            count++;
+                        }
+                        break;
+                    default:
+                        if (thing.def.size.x + thing.def.size.z > 4)
+                        {
+                            foreach (var cell in GenAdj.CellsOccupiedBy(thing))
+                            {
+                                temp += cell.GetTemperatureForCell(map);
+                                count++;
+                            }
+                        }
+                        break;
                 }
+
                 if (count > 0)
                 {
                     temperature = temp / count;
