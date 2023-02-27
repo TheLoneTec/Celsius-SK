@@ -125,7 +125,11 @@ namespace Celsius
                         }
                         break;
                     case "CelsiusSK_EveryBuildingCellPlusOne":
-                        foreach (var cell in GenAdj.CellsOccupiedBy(thing.Position, thing.Rotation, thing.def.Size + new IntVec2(1,1)))
+                        IntVec2 add = new IntVec2(1, 1);
+
+                        if (thing.def.Size.Area % 2 == 0)
+                            add += new IntVec2(2, 2);
+                        foreach (var cell in GenAdj.CellsOccupiedBy(thing.Position, thing.Rotation, thing.def.Size + add))
                         {
                             temp += cell.GetTemperatureForCell(map);
                             count++;
