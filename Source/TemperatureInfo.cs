@@ -476,8 +476,11 @@ namespace Celsius
                 if (CompThermal.ShouldApplyTo(thingsList[i].def))
                 {
                     ThermalProps thermalProps = thingsList[i].TryGetComp<CompThermal>()?.ThermalProperties;
-                    if (thermalProps != null)
+                    if (thermalProps != null && (thingsList[i].def.defName == "Vent" || thingsList.Where(d => d.def.defName == "Vent").EnumerableNullOrEmpty()))
+                    {
+                        //Log.Message("thingdef is: " + thingsList[i].def.defName);
                         return thermalProperties[index] = thermalProps;
+                    }
                 }
             return thermalProperties[index] = ThermalProps.Air;
         }
