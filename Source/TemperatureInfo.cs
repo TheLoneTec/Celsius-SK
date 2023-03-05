@@ -451,11 +451,15 @@ namespace Celsius
         {
             if (room == null || room.ID == -1 || roomTemperatures == null)
             {
-                LogUtility.Log($"Could not get temperature for room {room?.ToString() ?? "null"}.", LogLevel.Error);
+                //LogUtility.Log($"Could not get temperature for room {room?.ToString() ?? "null"}.", LogLevel.Error);
                 return map.mapTemperature.OutdoorTemp;
             }
             if (roomTemperatures.TryGetValue(room.ID, out float temperature))
+            {
+                //Log.Message("Room Temp is: " + temperature);
                 return temperature;
+            }
+            //Log.Message("Average Room Temp is: " + room.Cells.Average(cell => GetTemperatureForCell(cell)));
             return roomTemperatures[room.ID] = room.Cells.Average(cell => GetTemperatureForCell(cell));
         }
 

@@ -96,6 +96,7 @@ namespace Celsius
         // Replaces GenTemperature.TryGetDirectAirTemperatureForCell by providing cell-specific temperature
         public static bool GenTemperature_TryGetDirectAirTemperatureForCell(ref bool __result, IntVec3 c, Map map, out float temperature)
         {
+            temperature = map.mapTemperature.OutdoorTemp;
             Thing thing = c.GetThingList(map).Find(b => b.def.category == ThingCategory.Building && b.def.altitudeLayer == AltitudeLayer.Building
             && b.def.passability != Traversability.Standable);
             if (thing != null)
@@ -107,8 +108,8 @@ namespace Celsius
                     case "CelsiusSK_PrioOutdoorOrRoom":
                         if (c.IsInRoom(map))
                         {
-                            TemperatureInfo tmp = new TemperatureInfo(map);
-                            temperature = tmp.GetRoomTemperature(c.GetRoom(map));
+                            //TemperatureInfo tmp = new TemperatureInfo(map);
+                            temperature = c.GetRoom(map).Temperature;
                         }
                         else
                         {
@@ -136,7 +137,7 @@ namespace Celsius
                         }
                         break;
                     default:
-                        if (thing.def.size.x + thing.def.size.z > 4)
+                        if (thing.def.size.x + thing.def.size.z > 3)
                         {
                             foreach (var cell in GenAdj.CellsOccupiedBy(thing))
                             {
@@ -151,11 +152,50 @@ namespace Celsius
                 {
                     temperature = temp / count;
                     __result = true;
+                    //if (DebugSettings.godMode)
+                        //Log.Message("TryGetDirectAirTemperature is: " + temperature);
                     return false;
                 }
+
+                if (!thing.def.IsBlueprint && thing.def.hasInteractionCell)
+                {
+                    temperature = GenTemperature.GetTemperatureForCell(ThingUtility.InteractionCell(thing.def.interactionCellOffset, c, c.GetFirstThing(map, thing.def).Rotation), map);
+                    //if (DebugSettings.godMode)
+                        //Log.Message("hasInteractionCell is: " + temperature + ". Loc: " + c);
+                }
+                else if (c.IsInRoom(map))
+                {
+                    //TemperatureInfo tmp = new TemperatureInfo(map);
+                    temperature = c.GetRoom(map).Temperature;
+                    __result = true;
+                    return false;
+                }
+                else if (c.Roofed(map))
+                {
+                    temperature = c.GetTemperatureForCell(map);
+                }
+                else if (!c.Roofed(map))
+                {
+                    temperature = map.mapTemperature.OutdoorTemp;
+                }
             }
-            temperature = c.GetTemperatureForCell(map);
+
+            if (c.IsInRoom(map))
+            {
+                //TemperatureInfo tmp = new TemperatureInfo(map);
+                temperature = c.GetRoom(map).Temperature;
+                __result = true;
+                return false;
+            }
+            else
+            {
+                temperature = c.GetTemperatureForCell(map);
+            }
+
+
             __result = true;
+            //if (DebugSettings.godMode)
+                //Log.Message("TryGetDirectAirTemperature is: " + temperature);
             return false;
         }
 
@@ -176,22 +216,9 @@ namespace Celsius
 
             float temperatureForCell = 21f;
 
-            if (c.IsInRoom(map))
-            {
-                TemperatureInfo tmp = new TemperatureInfo(map);
-                temperatureForCell = tmp.GetRoomTemperature(c.GetRoom(map));
-            }
-            else
-            {
-                if (tDef.hasInteractionCell)
-                {
-                    temperatureForCell = GenTemperature.GetTemperatureForCell(ThingUtility.InteractionCell(tDef.interactionCellOffset, c, c.GetFirstThing(map, tDef).Rotation), map);
-                }
-                else
-                {
-                    temperatureForCell = GenTemperature.GetTemperatureForCell(c, map);
-                }
-            }
+            temperatureForCell = GenTemperature.GetTemperatureForCell(c, map);
+            //if (DebugSettings.godMode)
+                //Log.Message("GetTemperatureForCell is: " + temperatureForCell);
 
             float minTemp = 9.0f;
             float maxTemp = 35.0f;
@@ -204,7 +231,8 @@ namespace Celsius
                 if (!tDef.statBases.Where(s => s.stat.defName == "MaxTemp").EnumerableNullOrEmpty())
                     maxTemp = tDef.statBases.Find(s => s.stat.defName == "MaxTemp").value;
             }
-
+            //if (DebugSettings.godMode)
+                //Log.Message("Temeprature found is: " + temperatureForCell);
             return (double)temperatureForCell < minTemp || (double)temperatureForCell > maxTemp;
 
 
