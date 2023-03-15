@@ -175,7 +175,7 @@
 		<value>
 			<li Class="Celsius.StuffThermalProperties">
 				<volumetricHeatCapacity>1137</volumetricHeatCapacity>
-				<insulationFactor>0.3</insulationFactor>
+				<insulationFactor>0.03</insulationFactor>
 			</li>
 		</value>
 	</Operation>
