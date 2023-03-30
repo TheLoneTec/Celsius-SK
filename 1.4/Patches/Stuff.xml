@@ -181,7 +181,7 @@
 		<value>
 			<li Class="Celsius.StuffThermalProperties">
 				<volumetricHeatCapacity>1137</volumetricHeatCapacity>
-				<insulationFactor>0.3</insulationFactor>
+				<insulationFactor>0.03</insulationFactor>
 			</li>
 		</value>
 	</li>
@@ -550,7 +550,7 @@
 			</li>	
 			
 			<li Class="PatchOperationAddModExtension">
-				<xpath>Defs/ThingDef[defName="ZF_BlocksPeridotite"]</xpath>
+				<xpath>Defs/ThingDef[defName="ZF_ChunkDunite"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
 						<volumetricHeatCapacity>140</volumetricHeatCapacity>

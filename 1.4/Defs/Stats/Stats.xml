@@ -57,7 +57,7 @@
 		<category>Building</category>
 		<defaultBaseValue>0.7</defaultBaseValue>
 		<minValue>0</minValue>
-		<toStringStyle>FloatTwo</toStringStyle>
+		<toStringStyle>PercentZero</toStringStyle>
 		<showOnNonWorkTables>false</showOnNonWorkTables>
 		<displayPriorityInCategory>3001</displayPriorityInCategory>
 	</StatDef>
