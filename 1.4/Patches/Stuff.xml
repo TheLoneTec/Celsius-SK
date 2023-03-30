@@ -574,8 +574,8 @@
 				<xpath>Defs/ThingDef[defName="WroughtIron"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1270</volumetricHeatCapacity>
-						<insulationFactor>0.66</insulationFactor>
+						<volumetricHeatCapacity>500</volumetricHeatCapacity>
+						<insulationFactor>0.50</insulationFactor>
 					</li>
 				</value>
 			</li>
@@ -584,8 +584,8 @@
 				<xpath>Defs/ThingDef[defName="ForgedSteel"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1250</volumetricHeatCapacity>
-						<insulationFactor>0.66</insulationFactor>
+						<volumetricHeatCapacity>500</volumetricHeatCapacity>
+						<insulationFactor>0.50</insulationFactor>
 					</li>
 				</value>
 			</li>
@@ -594,8 +594,8 @@
 				<xpath>Defs/ThingDef[defName="CastIron"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1150</volumetricHeatCapacity>
-						<insulationFactor>0.66</insulationFactor>
+						<volumetricHeatCapacity>460</volumetricHeatCapacity>
+						<insulationFactor>0.60</insulationFactor>
 					</li>
 				</value>
 			</li>
@@ -604,8 +604,8 @@
 				<xpath>Defs/ThingDef[defName="WootzSteel"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1220</volumetricHeatCapacity>
-						<insulationFactor>0.66</insulationFactor>
+						<volumetricHeatCapacity>500</volumetricHeatCapacity>
+						<insulationFactor>0.55</insulationFactor>
 					</li>
 				</value>
 			</li>
@@ -614,8 +614,8 @@
 				<xpath>Defs/ThingDef[defName="CrucibleSteel"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1330</volumetricHeatCapacity>
-						<insulationFactor>0.66</insulationFactor>
+						<volumetricHeatCapacity>500</volumetricHeatCapacity>
+						<insulationFactor>0.55</insulationFactor>
 					</li>
 				</value>
 			</li>
@@ -635,8 +635,8 @@
 				<xpath>Defs/ThingDef[defName="Dirt"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1200</volumetricHeatCapacity>
-						<insulationFactor>0.95</insulationFactor>
+						<volumetricHeatCapacity>800</volumetricHeatCapacity>
+						<insulationFactor>0.80</insulationFactor>
 					</li>
 				</value>
 			</li>
@@ -645,8 +645,8 @@
 				<xpath>Defs/ThingDef[defName="SandResource"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1200</volumetricHeatCapacity>
-						<insulationFactor>0.93</insulationFactor>
+						<volumetricHeatCapacity>900</volumetricHeatCapacity>
+						<insulationFactor>0.85</insulationFactor>
 					</li>
 				</value>
 			</li>
@@ -655,8 +655,8 @@
 				<xpath>Defs/ThingDef[defName="CrushedStone"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1200</volumetricHeatCapacity>
-						<insulationFactor>0.97</insulationFactor>
+						<volumetricHeatCapacity>700</volumetricHeatCapacity>
+						<insulationFactor>0.75</insulationFactor>
 					</li>
 				</value>
 			</li>
@@ -782,7 +782,7 @@
 				<xpath>Defs/ThingDef[defName="WoodLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1800</volumetricHeatCapacity>
+						<volumetricHeatCapacity>220</volumetricHeatCapacity>
 						<insulationFactor>1.12</insulationFactor>
 					</li>
 				</value>
@@ -796,7 +796,7 @@
 				<xpath>Defs/ThingDef[defName="CecropiaLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>3500</volumetricHeatCapacity>
+						<volumetricHeatCapacity>300</volumetricHeatCapacity>
 						<insulationFactor>1.48</insulationFactor>
 					</li>
 				</value>
@@ -806,7 +806,7 @@
 				<xpath>Defs/ThingDef[defName="PineLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>3500</volumetricHeatCapacity>
+						<volumetricHeatCapacity>300</volumetricHeatCapacity>
 						<insulationFactor>1.48</insulationFactor>
 					</li>
 				</value>
@@ -817,7 +817,7 @@
 				<xpath>Defs/ThingDef[defName="WillowLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>3500</volumetricHeatCapacity>
+						<volumetricHeatCapacity>300</volumetricHeatCapacity>
 						<insulationFactor>1.42</insulationFactor>
 					</li>
 				</value>
@@ -827,7 +827,7 @@
 				<xpath>Defs/ThingDef[defName="CypressLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>3500</volumetricHeatCapacity>
+						<volumetricHeatCapacity>300</volumetricHeatCapacity>
 						<insulationFactor>1.42</insulationFactor>
 					</li>
 				</value>
@@ -837,7 +837,7 @@
 				<xpath>Defs/ThingDef[defName="PoplarLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>3500</volumetricHeatCapacity>
+						<volumetricHeatCapacity>300</volumetricHeatCapacity>
 						<insulationFactor>1.42</insulationFactor>
 					</li>
 				</value>
@@ -847,7 +847,7 @@
 				<xpath>Defs/ThingDef[defName="CecropiaPlank"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>3500</volumetricHeatCapacity>
+						<volumetricHeatCapacity>300</volumetricHeatCapacity>
 						<insulationFactor>1.48</insulationFactor>
 					</li>
 				</value>
@@ -857,7 +857,7 @@
 				<xpath>Defs/ThingDef[defName="PinePlank"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>3500</volumetricHeatCapacity>
+						<volumetricHeatCapacity>300</volumetricHeatCapacity>
 						<insulationFactor>1.48</insulationFactor>
 					</li>
 				</value>
@@ -867,7 +867,7 @@
 				<xpath>Defs/ThingDef[defName="WillowPlank"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>3500</volumetricHeatCapacity>
+						<volumetricHeatCapacity>300</volumetricHeatCapacity>
 						<insulationFactor>1.42</insulationFactor>
 					</li>
 				</value>
@@ -877,7 +877,7 @@
 				<xpath>Defs/ThingDef[defName="CypressPlank"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>3500</volumetricHeatCapacity>
+						<volumetricHeatCapacity>300</volumetricHeatCapacity>
 						<insulationFactor>1.42</insulationFactor>
 					</li>
 				</value>
@@ -887,7 +887,7 @@
 				<xpath>Defs/ThingDef[defName="PoplarPlank"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>3500</volumetricHeatCapacity>
+						<volumetricHeatCapacity>300</volumetricHeatCapacity>
 						<insulationFactor>1.48</insulationFactor>
 					</li>
 				</value>
@@ -899,7 +899,7 @@
 				<xpath>Defs/ThingDef[defName="MapleLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>2000</volumetricHeatCapacity>
+						<volumetricHeatCapacity>200</volumetricHeatCapacity>
 						<insulationFactor>1.28</insulationFactor>
 					</li>
 				</value>
@@ -909,7 +909,7 @@
 				<xpath>Defs/ThingDef[defName="TeakLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>2000</volumetricHeatCapacity>
+						<volumetricHeatCapacity>200</volumetricHeatCapacity>
 						<insulationFactor>1.28</insulationFactor>
 					</li>
 				</value>
@@ -919,7 +919,7 @@
 				<xpath>Defs/ThingDef[defName="BirchLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>2000</volumetricHeatCapacity>
+						<volumetricHeatCapacity>200</volumetricHeatCapacity>
 						<insulationFactor>1.28</insulationFactor>
 					</li>
 				</value>
@@ -929,7 +929,7 @@
 				<xpath>Defs/ThingDef[defName="OakLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>2000</volumetricHeatCapacity>
+						<volumetricHeatCapacity>200</volumetricHeatCapacity>
 						<insulationFactor>1.28</insulationFactor>
 					</li>
 				</value>
@@ -939,7 +939,7 @@
 				<xpath>Defs/ThingDef[defName="AcaciaLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>2000</volumetricHeatCapacity>
+						<volumetricHeatCapacity>200</volumetricHeatCapacity>
 						<insulationFactor>1.24</insulationFactor>
 					</li>
 				</value>
@@ -949,7 +949,7 @@
 				<xpath>Defs/ThingDef[defName="MaplePlank"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>2000</volumetricHeatCapacity>
+						<volumetricHeatCapacity>200</volumetricHeatCapacity>
 						<insulationFactor>1.28</insulationFactor>
 					</li>
 				</value>
@@ -959,7 +959,7 @@
 				<xpath>Defs/ThingDef[defName="TeakPlank"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>2000</volumetricHeatCapacity>
+						<volumetricHeatCapacity>200</volumetricHeatCapacity>
 						<insulationFactor>1.28</insulationFactor>
 					</li>
 				</value>
@@ -969,7 +969,7 @@
 				<xpath>Defs/ThingDef[defName="BirchPlank"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>2000</volumetricHeatCapacity>
+						<volumetricHeatCapacity>200</volumetricHeatCapacity>
 						<insulationFactor>1.28</insulationFactor>
 					</li>
 				</value>
@@ -979,7 +979,7 @@
 				<xpath>Defs/ThingDef[defName="OakPlank"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>2000</volumetricHeatCapacity>
+						<volumetricHeatCapacity>200</volumetricHeatCapacity>
 						<insulationFactor>1.28</insulationFactor>
 					</li>
 				</value>
@@ -989,7 +989,7 @@
 				<xpath>Defs/ThingDef[defName="AcaciaPlank"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>2000</volumetricHeatCapacity>
+						<volumetricHeatCapacity>200</volumetricHeatCapacity>
 						<insulationFactor>1.24</insulationFactor>
 					</li>
 				</value>
@@ -1001,7 +1001,7 @@
 				<xpath>Defs/ThingDef[defName="DragonwoodLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1800</volumetricHeatCapacity>
+						<volumetricHeatCapacity>180</volumetricHeatCapacity>
 						<insulationFactor>1.2</insulationFactor>
 					</li>
 				</value>
@@ -1011,7 +1011,7 @@
 				<xpath>Defs/ThingDef[defName="MangroveLog"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1800</volumetricHeatCapacity>
+						<volumetricHeatCapacity>180</volumetricHeatCapacity>
 						<insulationFactor>1.2</insulationFactor>
 					</li>
 				</value>
@@ -1021,7 +1021,7 @@
 				<xpath>Defs/ThingDef[defName="DragonwoodPlank"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1800</volumetricHeatCapacity>
+						<volumetricHeatCapacity>180</volumetricHeatCapacity>
 						<insulationFactor>1.2</insulationFactor>
 					</li>
 				</value>
@@ -1031,7 +1031,7 @@
 				<xpath>Defs/ThingDef[defName="MangrovePlank"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1800</volumetricHeatCapacity>
+						<volumetricHeatCapacity>180</volumetricHeatCapacity>
 						<insulationFactor>1.2</insulationFactor>
 					</li>
 				</value>

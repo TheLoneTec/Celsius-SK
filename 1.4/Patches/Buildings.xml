@@ -273,7 +273,7 @@
 				<value>
 					<li Class="Celsius.ThingThermalProperties">
 						<heatCapacity>8.5</heatCapacity>
-						<insulation>1.75</insulation>
+						<insulation>2.5</insulation>
 						<volume>0.008</volume>
 					</li>
 				</value>
@@ -284,7 +284,7 @@
 				<value>
 					<li Class="Celsius.ThingThermalProperties">
 						<heatCapacity>7</heatCapacity>
-						<insulation>2</insulation>
+						<insulation>1.25</insulation>
 						<volume>0.008</volume>
 					</li>
 				</value>
@@ -295,7 +295,7 @@
 				<value>
 					<li Class="Celsius.ThingThermalProperties">
 						<heatCapacity>7</heatCapacity>
-						<insulation>2.5</insulation>
+						<insulation>1.5</insulation>
 						<volume>0.008</volume>
 					</li>
 				</value>
@@ -306,7 +306,7 @@
 				<value>
 					<li Class="Celsius.ThingThermalProperties">
 						<heatCapacity>11</heatCapacity>
-						<insulation>3.3</insulation>
+						<insulation>2.5</insulation>
 						<volume>0.010</volume>
 					</li>
 				</value>
@@ -317,7 +317,7 @@
 				<value>
 					<li Class="Celsius.ThingThermalProperties">
 						<heatCapacity>11</heatCapacity>
-						<insulation>4</insulation>
+						<insulation>3</insulation>
 						<volume>0.010</volume>
 					</li>
 				</value>
@@ -328,7 +328,7 @@
 				<value>
 					<li Class="Celsius.ThingThermalProperties">
 						<heatCapacity>11</heatCapacity>
-						<insulation>3.5</insulation>
+						<insulation>4</insulation>
 						<volume>0.010</volume>
 					</li>
 				</value>
@@ -338,8 +338,8 @@
 				<xpath>Defs/ThingDef[defName="InteriorWall"]</xpath>
 				<value>
 					<li Class="Celsius.ThingThermalProperties">
-						<heatCapacity>9.5</heatCapacity>
-						<insulation>2.2</insulation>
+						<heatCapacity>6</heatCapacity>
+						<insulation>1</insulation>
 						<volume>0.010</volume>
 					</li>
 				</value>
@@ -360,8 +360,8 @@
 				<xpath>Defs/ThingDef[defName="CeramicTileWall"]</xpath>
 				<value>
 					<li Class="Celsius.ThingThermalProperties">
-						<heatCapacity>11</heatCapacity>
-						<insulation>3.5</insulation>
+						<heatCapacity>8</heatCapacity>
+						<insulation>1.5</insulation>
 						<volume>0.010</volume>
 					</li>
 				</value>
