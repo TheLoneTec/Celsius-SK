@@ -137,7 +137,7 @@ namespace Celsius
                         }
                         break;
                     default:
-                        if (thing.def.size.x + thing.def.size.z > 3)
+                        if (thing.def.size.x * thing.def.size.z > 3)
                         {
                             foreach (var cell in GenAdj.CellsOccupiedBy(thing))
                             {
