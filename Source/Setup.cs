@@ -157,26 +157,32 @@ namespace Celsius
                     return false;
                 }
 
-                if (!thing.def.IsBlueprint && thing.def.hasInteractionCell)
-                {
-                    temperature = GenTemperature.GetTemperatureForCell(ThingUtility.InteractionCell(thing.def.interactionCellOffset, c, c.GetFirstThing(map, thing.def).Rotation), map);
-                    //if (DebugSettings.godMode)
-                        //Log.Message("hasInteractionCell is: " + temperature + ". Loc: " + c);
-                }
-                else if (c.IsInRoom(map))
+                if (c.IsInRoom(map))
                 {
                     //TemperatureInfo tmp = new TemperatureInfo(map);
                     temperature = c.GetRoom(map).Temperature;
                     __result = true;
                     return false;
                 }
+                else if (!thing.def.IsBlueprint && thing.def.hasInteractionCell)
+                {
+                    temperature = GenTemperature.GetTemperatureForCell(ThingUtility.InteractionCell(thing.def.interactionCellOffset, c, c.GetFirstThing(map, thing.def).Rotation), map);
+                    //if (DebugSettings.godMode)
+                    //Log.Message("hasInteractionCell is: " + temperature + ". Loc: " + c);
+                    __result = true;
+                    return false;
+                }
                 else if (c.Roofed(map))
                 {
                     temperature = c.GetTemperatureForCell(map);
+                    __result = true;
+                    return false;
                 }
                 else if (!c.Roofed(map))
                 {
                     temperature = map.mapTemperature.OutdoorTemp;
+                    __result = true;
+                    return false;
                 }
             }
 
