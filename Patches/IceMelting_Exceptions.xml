@@ -8,6 +8,15 @@
             <operations>
 
                 <li Class="PatchOperationAdd">
+                    <xpath>Defs/ThingDef[defName="HSK_FishingSpotSpawner"]/building</xpath>
+                    <value>
+						<buildingTags>
+							<li>DoesNotSink</li>
+						</buildingTags>
+                    </value>
+                </li>
+
+                <li Class="PatchOperationAdd">
                     <xpath>Defs/ThingDef[defName="HSK_FishTrap"]/building</xpath>
                     <value>
 						<buildingTags>
