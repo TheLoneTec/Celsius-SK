@@ -53,3 +53,5 @@ E:\Users\kacey\Documents\GitHub\PacasForks\Celsius-SK\Source\UnityEngine.TextCor
 E:\Users\kacey\Documents\GitHub\PacasForks\Celsius-SK\Source\UnityEngine.UIModule.dll
 E:\Users\kacey\Documents\GitHub\PacasForks\Celsius-SK\Source\UnityEngine.Physics2DModule.dll
 E:\Users\kacey\Documents\GitHub\PacasForks\Celsius-SK\Source\UnityEngine.AnimationModule.dll
+E:\Users\kacey\Documents\GitHub\PacasForks\Celsius-SK\Source\LWM.DeepStorage.dll
+E:\Users\kacey\Documents\GitHub\PacasForks\Celsius-SK\Source\IHoldMultipleThings.dll

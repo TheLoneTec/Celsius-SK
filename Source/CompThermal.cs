@@ -35,7 +35,7 @@ namespace Celsius
         public override void Initialize(CompProperties props)
         {
             base.Initialize(props);
-            IsOpen |= (parent is Building_Door door && door.Open) || (parent is Building_Vent && parent.GetComp<CompFlickable>()?.SwitchIsOn == true);
+            IsOpen |= (parent is Building_Door door && door.Open) || (parent is Building_Vent && parent.GetComp<CompFlickable>()?.SwitchIsOn == true || (parent.GetType().FullName == "OpenTheWindows.Building_Window" && parent.def.defName.Contains("Rustic")));
         }
 
         public override void PostExposeData()
