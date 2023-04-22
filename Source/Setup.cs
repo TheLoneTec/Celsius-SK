@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using RimWorld;
+using RimWorld.BaseGen;
 using SK;
 using SK.Enlighten;
 using System;
@@ -42,6 +43,9 @@ namespace Celsius
             harmony.Patch(
                 AccessTools.Method($"RimWorld.StatPart_WorkTableTemperature:Applies", new Type[] { typeof(ThingDef), typeof(Map), typeof(IntVec3) }),
                 prefix: new HarmonyMethod(type.GetMethod($"Applies_Patch")));
+            harmony.Patch(
+                AccessTools.Method($"RimWorld.CompReportWorkSpeed:CompInspectStringExtra"),
+                postfix: new HarmonyMethod(type.GetMethod($"CompInspectStringExtra_Patch")));
             #endregion
             harmony.Patch(
                 AccessTools.Method("Verse.GenTemperature:PushHeat", new Type[] { typeof(IntVec3), typeof(Map), typeof(float) }),
@@ -137,7 +141,7 @@ namespace Celsius
                         }
                         break;
                     default:
-                        if (thing.def.size.x * thing.def.size.z > 3)
+                        if (thing.def.size.x * thing.def.size.z > 2)
                         {
                             foreach (var cell in GenAdj.CellsOccupiedBy(thing))
                             {
@@ -157,18 +161,18 @@ namespace Celsius
                     return false;
                 }
 
-                if (c.IsInRoom(map))
-                {
-                    //TemperatureInfo tmp = new TemperatureInfo(map);
-                    temperature = c.GetRoom(map).Temperature;
-                    __result = true;
-                    return false;
-                }
-                else if (!thing.def.IsBlueprint && thing.def.hasInteractionCell)
+                if (!thing.def.IsBlueprint && thing.def.hasInteractionCell)
                 {
                     temperature = GenTemperature.GetTemperatureForCell(ThingUtility.InteractionCell(thing.def.interactionCellOffset, c, c.GetFirstThing(map, thing.def).Rotation), map);
                     //if (DebugSettings.godMode)
                     //Log.Message("hasInteractionCell is: " + temperature + ". Loc: " + c);
+                    __result = true;
+                    return false;
+                }
+                else if(c.IsInRoom(map))
+                {
+                    //TemperatureInfo tmp = new TemperatureInfo(map);
+                    temperature = c.GetRoom(map).Temperature;
                     __result = true;
                     return false;
                 }
@@ -261,6 +265,22 @@ namespace Celsius
         }
 
         public static bool Applies(Thing t) => t.Spawned && Applies_Patch(t.def, t.Map, t.Position);
+
+        public static void CompInspectStringExtra_Patch(ref string __result, CompReportWorkSpeed __instance)
+        {
+            //Log.Message("Method Entered");
+            if (__result == null)
+                return;
+            if (__result.Contains("BadTemperature".Translate()) && __instance.parent != null)
+            {
+                //Log.Message("Altering String");
+                __result = __result.ReplaceFirst("BadTemperature".Translate(), "BadTemperature".Translate() + " : " + GenTemperature.GetTemperatureForCell(__instance.parent.Position, __instance.parent.Map).ToStringTemperature(Settings.TemperatureDisplayFormatString));
+                //Log.Message("Result = " + __result);
+                //Log.Message("Temp is: " + GenTemperature.GetTemperatureForCell(__instance.parent.Position, __instance.parent.Map).RoundToAsInt(1) + ". Translate is: " + "BadTemperature".Translate());
+            }
+           // Log.Message("Method Exited");
+
+        }
 
         // Replaces GenTemperature.PushHeat(IntVec3, Map, float) to change temperature at the specific cell instead of the whole room
         public static bool GenTemperature_PushHeat(ref bool __result, IntVec3 c, Map map, float energy) => __result = TemperatureUtility.TryPushHeat(c, map, energy);
