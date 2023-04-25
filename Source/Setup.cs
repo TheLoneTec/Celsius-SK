@@ -101,8 +101,11 @@ namespace Celsius
         public static bool GenTemperature_TryGetDirectAirTemperatureForCell(ref bool __result, IntVec3 c, Map map, out float temperature)
         {
             temperature = map.mapTemperature.OutdoorTemp;
-            Thing thing = c.GetThingList(map).Find(b => b.def.category == ThingCategory.Building && b.def.altitudeLayer == AltitudeLayer.Building
-            && b.def.passability != Traversability.Standable);
+            Thing thing = c.GetThingList(map).Find(b => b.TryGetComp<CompReportWorkSpeed>() != null && b.def.altitudeLayer == AltitudeLayer.Building);
+            //foreach (var item in c.GetThingList(map))
+            //{
+            //    Log.Message("Found: " + item.def.defName + ". Has Comp: " + (item.TryGetComp<CompReportWorkSpeed>() != null).ToString() + ". cateogry: " + item.def.category + ". Altitude Layer: " + item.def.altitudeLayer + ". Passibility: " + item.def.passability);
+            //}
             if (thing != null)
             {
                 float temp = 0;
@@ -157,33 +160,39 @@ namespace Celsius
                     temperature = temp / count;
                     __result = true;
                     //if (DebugSettings.godMode)
-                        //Log.Message("TryGetDirectAirTemperature is: " + temperature);
+                    //    Log.Message("TryGetDirectAirTemperature is: " + temperature);
                     return false;
                 }
 
                 if (!thing.def.IsBlueprint && thing.def.hasInteractionCell)
                 {
-                    temperature = GenTemperature.GetTemperatureForCell(ThingUtility.InteractionCell(thing.def.interactionCellOffset, c, c.GetFirstThing(map, thing.def).Rotation), map);
+                    temperature = ThingUtility.InteractionCell(thing.def.interactionCellOffset, c, c.GetFirstThing(map, thing.def).Rotation).GetTemperatureForCell(map);
                     //if (DebugSettings.godMode)
-                    //Log.Message("hasInteractionCell is: " + temperature + ". Loc: " + c);
+                    //    Log.Message("hasInteractionCell is: " + temperature + ". Loc: " + c);
                     __result = true;
                     return false;
                 }
                 else if(c.IsInRoom(map))
                 {
                     //TemperatureInfo tmp = new TemperatureInfo(map);
+                    //if (DebugSettings.godMode)
+                    //    Log.Message("Is In Room");
                     temperature = c.GetRoom(map).Temperature;
                     __result = true;
                     return false;
                 }
                 else if (c.Roofed(map))
                 {
+                    //if (DebugSettings.godMode)
+                    //    Log.Message("Is Roofed");
                     temperature = c.GetTemperatureForCell(map);
                     __result = true;
                     return false;
                 }
-                else if (!c.Roofed(map))
+                else
                 {
+                    //if (DebugSettings.godMode)
+                    //    Log.Message("Is Outdoors");
                     temperature = map.mapTemperature.OutdoorTemp;
                     __result = true;
                     return false;
@@ -192,6 +201,8 @@ namespace Celsius
 
             if (c.IsInRoom(map))
             {
+                //if (DebugSettings.godMode)
+                //    Log.Message("Is In Room 2");
                 //TemperatureInfo tmp = new TemperatureInfo(map);
                 temperature = c.GetRoom(map).Temperature;
                 __result = true;
@@ -199,6 +210,8 @@ namespace Celsius
             }
             else
             {
+                //if (DebugSettings.godMode)
+                //    Log.Message("Get Cell Temp");
                 temperature = c.GetTemperatureForCell(map);
             }
 
