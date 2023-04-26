@@ -101,7 +101,7 @@ namespace Celsius
         public static bool GenTemperature_TryGetDirectAirTemperatureForCell(ref bool __result, IntVec3 c, Map map, out float temperature)
         {
             temperature = map.mapTemperature.OutdoorTemp;
-            Thing thing = c.GetThingList(map).Find(b => b.TryGetComp<CompReportWorkSpeed>() != null && b.def.altitudeLayer == AltitudeLayer.Building);
+            Thing thing = c.GetThingList(map).Find(b => b.def.category == ThingCategory.Building && b.def.altitudeLayer == AltitudeLayer.Building);
             //foreach (var item in c.GetThingList(map))
             //{
             //    Log.Message("Found: " + item.def.defName + ". Has Comp: " + (item.TryGetComp<CompReportWorkSpeed>() != null).ToString() + ". cateogry: " + item.def.category + ". Altitude Layer: " + item.def.altitudeLayer + ". Passibility: " + item.def.passability);
@@ -199,6 +199,13 @@ namespace Celsius
                 }
             }
 
+            if (!c.InBounds(map))
+            {
+                temperature = 21f;
+                __result = false;
+                return true;
+            }
+
             if (c.IsInRoom(map))
             {
                 //if (DebugSettings.godMode)
@@ -241,7 +248,7 @@ namespace Celsius
 
             temperatureForCell = GenTemperature.GetTemperatureForCell(c, map);
             //if (DebugSettings.godMode)
-                //Log.Message("GetTemperatureForCell is: " + temperatureForCell);
+            //    Log.Message("GetTemperatureForCell is: " + temperatureForCell);
 
             float minTemp = 9.0f;
             float maxTemp = 35.0f;
