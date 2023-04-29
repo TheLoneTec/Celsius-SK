@@ -172,12 +172,18 @@ namespace Celsius
                     __result = true;
                     return false;
                 }
-                else if(c.IsInRoom(map))
+                else if(c.IsInRoom(map) && thing.def.Size.x * thing.def.Size.z > 1)
                 {
+                    foreach (var cell in GenAdj.CellsOccupiedBy(thing))
+                    {
+                        temp += cell.GetTemperatureForCell(map);
+                        count++;
+                    }
+                    temperature = temp / count;
                     //TemperatureInfo tmp = new TemperatureInfo(map);
                     //if (DebugSettings.godMode)
                     //    Log.Message("Is In Room");
-                    temperature = c.GetRoom(map).Temperature;
+                    //temperature = c.GetRoom(map).Temperature;
                     __result = true;
                     return false;
                 }
@@ -189,10 +195,17 @@ namespace Celsius
                     __result = true;
                     return false;
                 }
-                else
+                else if (thing.def.Size.x * thing.def.Size.z != 1)
                 {
                     //if (DebugSettings.godMode)
                     //    Log.Message("Is Outdoors");
+                    temperature = c.GetTemperatureForCell(map);
+                    //temperature = map.mapTemperature.OutdoorTemp;
+                    __result = true;
+                    return false;
+                }
+                else
+                {
                     temperature = map.mapTemperature.OutdoorTemp;
                     __result = true;
                     return false;
@@ -205,7 +218,7 @@ namespace Celsius
                 __result = false;
                 return true;
             }
-
+            /*
             if (c.IsInRoom(map))
             {
                 //if (DebugSettings.godMode)
@@ -216,11 +229,11 @@ namespace Celsius
                 return false;
             }
             else
-            {
+            {*/
                 //if (DebugSettings.godMode)
                 //    Log.Message("Get Cell Temp");
                 temperature = c.GetTemperatureForCell(map);
-            }
+            //}
 
 
             __result = true;
