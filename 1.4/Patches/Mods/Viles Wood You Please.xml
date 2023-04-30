@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Patch>
+
+	<!-- AirCon -->
+
+	<Operation Class="PatchOperationFindMod">
+	<mods>
+		<li>Vile's Wood You Please</li>
+	</mods>
+		<match Class="PatchOperationSequence">
+			<operations>
+			
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="ChoppingBlock"]/statBases</xpath>
+				<value>
+					<WorkRateFactor>0.9</WorkRateFactor>
+				</value>
+			</li>
+
+			</operations>
+		</match>
+	</Operation>
+
+</Patch>
