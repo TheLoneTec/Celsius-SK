@@ -100,8 +100,17 @@ namespace Celsius
         // Replaces GenTemperature.TryGetDirectAirTemperatureForCell by providing cell-specific temperature
         public static bool GenTemperature_TryGetDirectAirTemperatureForCell(ref bool __result, IntVec3 c, Map map, out float temperature)
         {
+            return GetDirectCellAirTempForBuilding(ref __result, c, map, out temperature, null);
+        }
+
+        public static bool GetDirectCellAirTempForBuilding(ref bool __result, IntVec3 c, Map map, out float temperature, ThingDef requester)
+        {
             temperature = map.mapTemperature.OutdoorTemp;
-            Thing thing = c.GetThingList(map).Find(b => b.def.category == ThingCategory.Building && b.def.altitudeLayer == AltitudeLayer.Building);
+            Thing thing;
+            if (requester != null)
+                thing = c.GetThingList(map).Find(b => b.def == requester);
+            else
+                thing = c.GetThingList(map).Find(b => b.def.category == ThingCategory.Building && b.def.altitudeLayer == AltitudeLayer.Building);
             //foreach (var item in c.GetThingList(map))
             //{
             //    Log.Message("Found: " + item.def.defName + ". Has Comp: " + (item.TryGetComp<CompReportWorkSpeed>() != null).ToString() + ". cateogry: " + item.def.category + ". Altitude Layer: " + item.def.altitudeLayer + ". Passibility: " + item.def.passability);
@@ -172,7 +181,7 @@ namespace Celsius
                     __result = true;
                     return false;
                 }
-                else if(c.IsInRoom(map) && thing.def.Size.x * thing.def.Size.z > 1)
+                else if (c.IsInRoom(map) && thing.def.Size.x * thing.def.Size.z > 1)
                 {
                     foreach (var cell in GenAdj.CellsOccupiedBy(thing))
                     {
@@ -230,15 +239,15 @@ namespace Celsius
             }
             else
             {*/
-                //if (DebugSettings.godMode)
-                //    Log.Message("Get Cell Temp");
-                temperature = c.GetTemperatureForCell(map);
+            //if (DebugSettings.godMode)
+            //    Log.Message("Get Cell Temp");
+            temperature = c.GetTemperatureForCell(map);
             //}
 
 
             __result = true;
             //if (DebugSettings.godMode)
-                //Log.Message("TryGetDirectAirTemperature is: " + temperature);
+            //Log.Message("TryGetDirectAirTemperature is: " + temperature);
             return false;
         }
 
@@ -258,10 +267,13 @@ namespace Celsius
                 return false;
 
             float temperatureForCell = 21f;
+            bool tempFound = false;
 
-            temperatureForCell = GenTemperature.GetTemperatureForCell(c, map);
+            temperatureForCell = GetTemperatureForCell(ref tempFound,c, map, tDef);
             //if (DebugSettings.godMode)
             //    Log.Message("GetTemperatureForCell is: " + temperatureForCell);
+            if (!tempFound)
+                temperatureForCell = 21f;
 
             float minTemp = 9.0f;
             float maxTemp = 35.0f;
@@ -281,7 +293,45 @@ namespace Celsius
 
         }
 
-        public static void TransformValue_Patch(StatRequest req, ref float val)
+        public static float GetTemperatureForCell(ref bool tempFound, IntVec3 c, Map map, ThingDef requester)
+        {
+            TryGetTemperatureForCell(ref tempFound, c, map, out var tempResult, requester);
+            return tempResult;
+        }
+
+        public static bool TryGetTemperatureForCell(ref bool tempFound, IntVec3 c, Map map, out float tempResult, ThingDef requester)
+        {
+            if (map == null)
+            {
+                Log.Error("Got temperature for null map.");
+                tempResult = 21f;
+                return true;
+            }
+
+            if (!c.InBounds(map))
+            {
+                tempResult = 21f;
+                return false;
+            }
+
+            if (GetDirectCellAirTempForBuilding(ref tempFound,c, map, out tempResult, requester))
+            {
+                return true;
+            }
+
+            List<Thing> list = map.thingGrid.ThingsListAtFast(c);
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].def.passability == Traversability.Impassable)
+                {
+                    return GenTemperature.TryGetAirTemperatureAroundThing(list[i], out tempResult);
+                }
+            }
+
+            return false;
+        }
+
+        public static bool TransformValue_Patch(StatRequest req, ref float val)
         {
             if (req.HasThing && Applies(req.Thing))
             {
@@ -294,7 +344,7 @@ namespace Celsius
                 }
                 val *= WorkRateFactor;
             }
-            return;
+            return false;
         }
 
         public static bool Applies(Thing t) => t.Spawned && Applies_Patch(t.def, t.Map, t.Position);
