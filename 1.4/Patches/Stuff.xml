@@ -667,26 +667,6 @@
 
 	<Operation Class="PatchOperationFindMod">
 	<mods>
-		<li>Alpha Animals</li>
-	</mods>
-		<match Class="PatchOperationSequence">
-			<operations>
-			
-			<li Class="PatchOperationAddModExtension">
-				<xpath>Defs/ThingDef[defName="AA_SkySteel"]</xpath>
-				<value>
-					<li Class="Celsius.StuffThermalProperties">
-						<volumetricHeatCapacity>1335</volumetricHeatCapacity>
-						<insulationFactor>0.28</insulationFactor>
-					</li>
-				</value>
-			</li>
-			</operations>
-		</match>
-	</Operation>
-
-	<Operation Class="PatchOperationFindMod">
-	<mods>
 		<li>Jewelry</li>
 	</mods>
 		<match Class="PatchOperationSequence">

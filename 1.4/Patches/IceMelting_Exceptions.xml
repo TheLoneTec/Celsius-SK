@@ -8,7 +8,7 @@
             <operations>
 
                 <li Class="PatchOperationAdd">
-                    <xpath>Defs/ThingDef[defName="HSK_FishingSpotSpawner"]/building</xpath>
+                    <xpath>Defs/ThingDef[defName="HSK_FishingSpot"]/building</xpath>
                     <value>
 						<buildingTags>
 							<li>DoesNotSink</li>
@@ -27,6 +27,15 @@
 				
                 <li Class="PatchOperationAdd">
                     <xpath>Defs/ThingDef[@Name="CrashedShipPartBase"]/building</xpath>
+                    <value>
+						<buildingTags>
+							<li>DoesNotSink</li>
+						</buildingTags>
+                    </value>
+                </li>
+  
+                <li Class="PatchOperationAdd">
+                    <xpath>Defs/ThingDef[defName="WaterproofConduit"]/building</xpath>
                     <value>
 						<buildingTags>
 							<li>DoesNotSink</li>

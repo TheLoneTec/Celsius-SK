@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Patch>
+
+	<!-- ALPHA BIOMES -->
+
+	<!-- Stuff -->
+
+	<Operation Class="PatchOperationFindMod">
+	<mods>
+		<li>Alpha Biomes</li>
+	</mods>
+		<match Class="PatchOperationSequence">
+			<operations>
+
+			<!-- Stuff : Rocks -->
+
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[@Name="GU_RockBase"]</xpath>
+				<value>
+					<li Class="Celsius.ThingThermalProperties">
+						<heatCapacity>15</heatCapacity>
+						<volume>0.5</volume>
+						<insulation>5</insulation>
+					</li>
+				</value>
+			</li>
+
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="GU_BlocksRoseQuartz"]</xpath>
+				<value>
+					<li Class="Celsius.StuffThermalProperties">
+						<volumetricHeatCapacity>1000</volumetricHeatCapacity>
+						<insulationFactor>0.85</insulationFactor>
+					</li>
+				</value>
+			</li>
+
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="AB_ChunkObsidian"]</xpath>
+				<value>
+					<li Class="Celsius.StuffThermalProperties">
+						<volumetricHeatCapacity>1500</volumetricHeatCapacity>
+						<insulationFactor>1.15</insulationFactor>
+					</li>
+				</value>
+			</li>
+
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="AB_BlocksMudstone"]</xpath>
+				<value>
+					<li Class="Celsius.StuffThermalProperties">
+						<volumetricHeatCapacity>1300</volumetricHeatCapacity>
+						<insulationFactor>0.97</insulationFactor>
+					</li>
+				</value>
+			</li>
+
+			<!-- Stuff Other -->
+
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="AB_AlcyoniteChunk"]</xpath>
+				<value>
+					<li Class="Celsius.StuffThermalProperties">
+						<volumetricHeatCapacity>1400</volumetricHeatCapacity>
+						<insulationFactor>1.0</insulationFactor>
+					</li>
+				</value>
+			</li>
+
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="AB_CrystalWood"]</xpath>
+				<value>
+					<li Class="Celsius.StuffThermalProperties">
+						<volumetricHeatCapacity>180</volumetricHeatCapacity>
+						<insulationFactor>1.1</insulationFactor>
+					</li>
+				</value>
+			</li>
+
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="AB_Crystal_WoodPlank"]</xpath>
+				<value>
+					<li Class="Celsius.StuffThermalProperties">
+						<volumetricHeatCapacity>180</volumetricHeatCapacity>
+						<insulationFactor>1.2</insulationFactor>
+					</li>
+				</value>
+			</li>
+
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="GU_RedWood"]</xpath>
+				<value>
+					<li Class="Celsius.StuffThermalProperties">
+						<volumetricHeatCapacity>600</volumetricHeatCapacity>
+						<insulationFactor>1.15</insulationFactor>
+					</li>
+				</value>
+			</li>
+
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="AB_Red_WoodPlank"]</xpath>
+				<value>
+					<li Class="Celsius.StuffThermalProperties">
+						<volumetricHeatCapacity>600</volumetricHeatCapacity>
+						<insulationFactor>1.15</insulationFactor>
+					</li>
+				</value>
+			</li>
+
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="AB_MushroomWoodLog"]</xpath>
+				<value>
+					<li Class="Celsius.StuffThermalProperties">
+						<volumetricHeatCapacity>300</volumetricHeatCapacity>
+						<insulationFactor>1.42</insulationFactor>
+					</li>
+				</value>
+			</li>
+
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="AB_Shroom_WoodPlank"]</xpath>
+				<value>
+					<li Class="Celsius.StuffThermalProperties">
+						<volumetricHeatCapacity>300</volumetricHeatCapacity>
+						<insulationFactor>1.42</insulationFactor>
+					</li>
+				</value>
+			</li>
+
+			<!-- Ignition data: stuff -->
+
+			<li Class="XmlExtensions.PatchOperationSafeAdd">
+				<xpath>Defs/ThingDef[defName="AB_CrystalWood" or defName="AB_Crystal_WoodPlank"]</xpath>
+				<value>
+					<statBases>
+						<Celsius_IgnitionTemperature>400</Celsius_IgnitionTemperature>
+					</statBases>
+					<stuffProps>
+						<statOffsets>
+							<Celsius_IgnitionTemperature>400</Celsius_IgnitionTemperature>
+						</statOffsets>
+					</stuffProps>
+				</value>
+			</li>
+
+			<li Class="XmlExtensions.PatchOperationSafeAdd">
+				<xpath>Defs/ThingDef[defName="GU_RedWood" or defName="AB_Shroom_WoodPlank"]</xpath>
+				<value>
+					<statBases>
+						<Celsius_IgnitionTemperature>350</Celsius_IgnitionTemperature>
+					</statBases>
+					<stuffProps>
+						<statOffsets>
+							<Celsius_IgnitionTemperature>350</Celsius_IgnitionTemperature>
+						</statOffsets>
+					</stuffProps>
+				</value>
+			</li>
+
+			<li Class="XmlExtensions.PatchOperationSafeAdd">
+				<xpath>Defs/ThingDef[defName="AB_MushroomWoodLog" or defName="AB_Red_WoodPlank"]</xpath>
+				<value>
+					<statBases>
+						<Celsius_IgnitionTemperature>200</Celsius_IgnitionTemperature>
+					</statBases>
+					<stuffProps>
+						<statOffsets>
+							<Celsius_IgnitionTemperature>200</Celsius_IgnitionTemperature>
+						</statOffsets>
+					</stuffProps>
+				</value>
+			</li>
+
+			</operations>
+		</match>
+	</Operation>
+
+</Patch>

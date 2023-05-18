@@ -11,7 +11,14 @@
 		<match Class="PatchOperationSequence">
 			<operations>
 			
-
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="EAF"]/building</xpath>
+				<value>
+					<buildingTags>
+						<li>CelsiusSK_EveryBuildingCellPlusOne</li>
+					</buildingTags>
+				</value>
+			</li>
 
 			</operations>
 		</match>
