@@ -82,7 +82,7 @@
 		</value>
 	</Operation>
 
-	//HSK
+	<!--HSK-->
 
 	<Operation Class="PatchOperationAddModExtension">
 		<xpath>Defs/ThingDef[defName="Window"]</xpath>
