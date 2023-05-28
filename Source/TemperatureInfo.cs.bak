@@ -295,14 +295,14 @@ namespace Celsius
                             if (log)
                                 LogUtility.Log($"Terrain temperature: {terrainTemperature:F1}C. Terrain heat capacity: {terrainProps.heatCapacity}. Terrain heatflow: {terrainProps.HeatFlow:P0}. Equilibrium temperature: {terrainTemperature + terrainTempChange:F1}C.");
                             terrainTemperature += terrainTempChange * terrainProps.Conductivity;
-
-                            // Melting or freezing if terrain temperature has crossed respective melt/freeze points (upwards or downwards)
-                            if (terrainTemperatures[i] < FreezeMeltUtility.MeltTemperature && terrain.ShouldMelt(terrainTemperature))
-                                    cell.MeltTerrain(map, log);
-                            else if (terrainTemperatures[i] > FreezeMeltUtility.FreezeTemperature && terrain.ShouldFreeze(terrainTemperature))
-                                cell.FreezeTerrain(map, log);
-
                             terrainTemperatures[i] = terrainTemperature;
+
+                            // Freezing and melting (rarely)
+                            if (i % RareUpdateInterval == rareUpdateCounter)
+                                if (terrain.ShouldFreeze(terrainTemperature))
+                                    cell.FreezeTerrain(map, log);
+                                else if (terrain.ShouldMelt(terrainTemperature))
+                                    cell.MeltTerrain(map, log);
                         }
                         else terrainTemperatures[i] = float.NaN;
                     }
@@ -326,9 +326,9 @@ namespace Celsius
                 ProcessNeighbour(cell + IntVec3.South);
                 ProcessNeighbour(cell + IntVec3.West);
 
-                // Thermal exchange with the environment
-                RoofDef roof = cell.GetRoof(map);
-                TemperatureUtility.CalculateHeatTransferEnvironment(temperature, GetEnvironmentTemperature(roof), cellProps, roof != null, ref energy, ref heatFlow, log);
+                // Default environment temperature
+                if (TryGetEnvironmentTemperatureForCell(cell, out float environmentTemperature))
+                    TemperatureUtility.CalculateHeatTransferEnvironment(temperature, environmentTemperature, cellProps, ref energy, ref heatFlow, log);
 
                 // Applying heat transfer
                 float equilibriumDifference = energy / heatFlow;
@@ -342,8 +342,8 @@ namespace Celsius
                 if (temperature > 0 && cell.GetSnowDepth(map) > 0)
                 {
                     if (log)
-                        LogUtility.Log($"Snow: {cell.GetSnowDepth(map):F4}. {(cell.Roofed(map) ? "Roofed." : "Unroofed.")} Melting: {FreezeMeltUtility.SnowMeltAmountAt(temperature) * (cell.Roofed(map) ? Settings.SnowMeltCoefficient : Settings.SnowMeltCoefficientRain):F4}.");
-                    map.snowGrid.AddDepth(cell, -FreezeMeltUtility.SnowMeltAmountAt(temperature) * (cell.Roofed(map) ? Settings.SnowMeltCoefficient : outdoorSnowMeltRate));
+                        LogUtility.Log($"Snow: {cell.GetSnowDepth(map):F4}. {(cell.Roofed(map) ? "Roofed." : "Unroofed.")} Melting: {FreezeMeltUtility.SnowMeltAmountAt(temperature) * (cell.Roofed(map) ? SnowMeltCoefficient : SnowMeltCoefficientRain):F4}.");
+                    map.snowGrid.AddDepth(cell, -FreezeMeltUtility.SnowMeltAmountAt(temperature) * (cell.Roofed(map) ? SnowMeltCoefficient : outdoorSnowMeltRate));
                 }
 
                 // Autoignition
@@ -377,7 +377,6 @@ namespace Celsius
                         maxTemperatures[slice] = temperature;
             }
 
-            tick = 0;
             if (slice == 0)
             {
                 rareUpdateCounter = (rareUpdateCounter + 1) % RareUpdateInterval;
@@ -385,14 +384,14 @@ namespace Celsius
                 maxTemperature = Mathf.Max(maxTemperatures);
                 overlayDrawer.SetDirty();
             }
-            slice = (slice + 1) % Settings.SliceCount;
+            slice = (slice + 1) % SliceCount;
 
 #if DEBUG
             if (Settings.DebugMode)
             {
                 updateStopwatch.Stop();
-                if (slice == 0 && ++tickIterations % 10 == 0)
-                    LogUtility.Log($"Updated temperatures for {map} on tick {Find.TickManager.TicksGame} in {updateStopwatch.Elapsed.TotalMilliseconds / tickIterations:F1} ms.");
+                if (slice == 0)
+                    LogUtility.Log($"Updated temperatures for {map} on tick {Find.TickManager.TicksGame} in {updateStopwatch.Elapsed.TotalMilliseconds / ++tickIterations:F1} ms.");
             }
 #endif
         }
@@ -419,7 +418,17 @@ namespace Celsius
             return TemperatureTuning.DeepUndergroundTemperature;
         }
 
-        public float GetEnvironmentTemperature(RoofDef roof) => roof != null && roof.isThickRoof ? mountainTemperature : map.mapTemperature.OutdoorTemp;
+        public bool TryGetEnvironmentTemperatureForCell(IntVec3 cell, out float temperature)
+        {
+            RoofDef roof = cell.GetRoof(map);
+            if ((roof == RoofDefOf.RoofRockThick || roof == RoofDefOf.RoofRockThin) && cell.GetFirstMineable(map) != null)
+            {
+                temperature = mountainTemperature;
+                return true;
+            }
+            temperature = map.mapTemperature.OutdoorTemp;
+            return roof == null;
+        }
 
         public float GetTemperatureForCell(int index) => temperatures != null ? temperatures[index] : TemperatureTuning.DefaultTemperature;
 
@@ -429,11 +438,15 @@ namespace Celsius
         {
             if (room == null || room.ID == -1 || roomTemperatures == null)
             {
-                LogUtility.Log($"Could not get temperature for room {room?.ToString() ?? "null"}.", LogLevel.Error);
+                //LogUtility.Log($"Could not get temperature for room {room?.ToString() ?? "null"}.", LogLevel.Error);
                 return map.mapTemperature.OutdoorTemp;
             }
             if (roomTemperatures.TryGetValue(room.ID, out float temperature))
+            {
+                //Log.Message("Room Temp is: " + temperature);
                 return temperature;
+            }
+            //Log.Message("Average Room Temp is: " + room.Cells.Average(cell => GetTemperatureForCell(cell)));
             return roomTemperatures[room.ID] = room.Cells.Average(cell => GetTemperatureForCell(cell));
         }
 
@@ -454,7 +467,7 @@ namespace Celsius
                 if (CompThermal.ShouldApplyTo(thingsList[i].def))
                 {
                     ThermalProps thermalProps = thingsList[i].TryGetComp<CompThermal>()?.ThermalProperties;
-                    if (thermalProps != null && (thingsList[i].def.defName == "Vent" || thingsList.Where(d => d.def.defName == "Vent").EnumerableNullOrEmpty())) //HSK for over wall vents
+                    if (thermalProps != null && (thingsList[i].def.defName == "Vent" || thingsList.Where(d => d.def.defName == "Vent").EnumerableNullOrEmpty()))
                     {
                         //Log.Message("thingdef is: " + thingsList[i].def.defName);
                         return thermalProperties[index] = thermalProps;

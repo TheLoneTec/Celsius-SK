@@ -18,9 +18,6 @@
 					</points>
 				</offset>
 			</li>
-			<li Class="Celsius.StatPart_DirectSunlight">
-				<offset>-2</offset>
-			</li>
 		</value>
 	</Operation>
 
@@ -29,9 +26,6 @@
 		<value>
 			<li Class="Celsius.StatPart_Wetness">
 				<offset>5</offset>
-			</li>
-			<li Class="Celsius.StatPart_DirectSunlight">
-				<offset>-2</offset>
 			</li>
 		</value>
 	</Operation>
