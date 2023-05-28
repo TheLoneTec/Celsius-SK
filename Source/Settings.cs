@@ -115,6 +115,7 @@ namespace Celsius
             Log($"FreezingAndMeltingEnabled: {FreezingAndMeltingEnabled}");
             Log($"AutoignitionEnabled: {AutoignitionEnabled}");
             Log($"PawnWeatherEffects: {PawnWeatherEffects}");
+            Log($"TicksPerUpdate: {TicksPerUpdate}");
             Log($"ConductivityPowerBase: {ConductivityPowerBase}");
             Log($"ConvectionConductivityEffect: {ConvectionConductivityEffect}");
             Log($"EnvironmentDiffusionFactor: {EnvironmentDiffusionFactor}");
