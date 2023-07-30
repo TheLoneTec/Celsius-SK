@@ -19,6 +19,11 @@ namespace Celsius
     {
         static Harmony harmony;
 
+        public static readonly float defaultMinTemp;
+        public static readonly float defaultMaxTemp;
+        public static float globalMinTempOffset = 0f;
+        public static float globalMaxTempOffset = 0f;
+
         static Setup()
         {
             // Setting up Harmony
@@ -82,6 +87,12 @@ namespace Celsius
                 postfix: new HarmonyMethod(type.GetMethod("CompRitualFireOverlay_CompTick")));
 
             LogUtility.Log($"Harmony initialization complete.");
+
+            StatDef minTemp = DefDatabase<StatDef>.GetNamed("MinTemp");
+            StatDef maxTemp = DefDatabase<StatDef>.GetNamed("MaxTemp");
+
+            defaultMinTemp = minTemp != null ? minTemp.defaultBaseValue : 9f;
+            defaultMaxTemp = maxTemp != null ? maxTemp.defaultBaseValue : 35f;
 
             // Adding CompThermal and ThingThermalProperties to all applicable Things
             foreach (ThingDef def in DefDatabase<ThingDef>.AllDefs.Where(def => CompThermal.ShouldApplyTo(def)))
@@ -275,8 +286,9 @@ namespace Celsius
             if (!tempFound)
                 temperatureForCell = 21f;
 
-            float minTemp = 9.0f;
-            float maxTemp = 35.0f;
+
+            float minTemp = defaultMinTemp;
+            float maxTemp = defaultMaxTemp;
 
             if (tDef.statBases != null)
             {
@@ -287,7 +299,11 @@ namespace Celsius
                     maxTemp = tDef.statBases.Find(s => s.stat.defName == "MaxTemp").value;
             }
             //if (DebugSettings.godMode)
-                //Log.Message("Temeprature found is: " + temperatureForCell);
+            //Log.Message("Temeprature found is: " + temperatureForCell);
+
+            minTemp += globalMinTempOffset;
+            maxTemp += globalMaxTempOffset;
+
             return (double)temperatureForCell < minTemp || (double)temperatureForCell > maxTemp;
 
 
