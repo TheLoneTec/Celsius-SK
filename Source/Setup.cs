@@ -163,6 +163,26 @@ namespace Celsius
                             count++;
                         }
                         break;
+                    case "CelsiusSK_WorkArea":
+                        List<IntVec3> cells = new List<IntVec3>();
+                        foreach (var cell in GenAdj.CellsOccupiedBy(thing))
+                        {
+                            temp += cell.GetTemperatureForCell(map);
+                            count++;
+                            cells.Add(cell);
+                        }
+                        if (!thing.def.IsBlueprint && thing.def.hasInteractionCell)
+                        {
+                            IntVec3 interactionCell = ThingUtility.InteractionCell(thing.def.interactionCellOffset, c, c.GetFirstThing(map, thing.def).Rotation);
+                            if (!cells.Contains(interactionCell))
+                            {
+                                temp += interactionCell.GetTemperatureForCell(map);
+                                count++;
+                            }
+                        }
+                        break;
+                    case "CelsiusSK_InteractionSpot":
+                        break;
                     default:
                         if (thing.def.size.x * thing.def.size.z > 2)
                         {

@@ -20,6 +20,22 @@
 				</value>
 			</li>
 
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="FueledStove"]/building/buildingTags</xpath>
+				<value>
+					<li>CelsiusSK_InteractionSpot</li>
+				</value>
+			</li>
+
+			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="ElectricStove"]/building</xpath>
+				<value>
+					<buildingTags>
+						<li>CelsiusSK_InteractionSpot</li>
+					</buildingTags>
+				</value>
+			</li>
+
 			</operations>
 		</match>
 	</Operation>

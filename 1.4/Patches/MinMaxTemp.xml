@@ -19,6 +19,13 @@
 			</li>
 
 			<li Class="PatchOperationAdd">
+				<xpath>Defs/ThingDef[defName="FueledStove" or defname="ElectricStove"]/statBases</xpath>
+				<value>
+					<MaxTemp>45</MaxTemp>
+				</value>
+			</li>
+
+			<li Class="PatchOperationAdd">
 				<xpath>Defs/ThingDef[defName="ElectricSmelter"]/statBases</xpath>
 				<value>
 					<MaxTemp>75</MaxTemp>
