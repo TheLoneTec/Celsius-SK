@@ -368,6 +368,30 @@
 				</value>
 			</li>
 			
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="DoorBarn"]</xpath>
+				<value>
+					<li Class="Celsius.ThingThermalProperties">
+						<heatCapacity>6</heatCapacity>
+						<volume>0.0075</volume>
+						<insulation>5</insulation>
+						<airflowWhenOpen>0.75</airflowWhenOpen>
+					</li>
+				</value>
+			</li>
+			
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="DoorOrnate"]</xpath>
+				<value>
+					<li Class="Celsius.ThingThermalProperties">
+						<heatCapacity>6</heatCapacity>
+						<volume>0.0075</volume>
+						<insulation>5</insulation>
+						<airflowWhenOpen>0.75</airflowWhenOpen>
+					</li>
+				</value>
+			</li>
+			
 			</operations>
 		</match>
 	</Operation>
