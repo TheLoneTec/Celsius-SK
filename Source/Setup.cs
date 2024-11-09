@@ -1,12 +1,10 @@
 ﻿using HarmonyLib;
 using RimWorld;
-using RimWorld.BaseGen;
 using SK;
 using SK.Enlighten;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Verse;
 
 namespace Celsius
@@ -17,27 +15,57 @@ namespace Celsius
     [StaticConstructorOnStartup]
     internal static class Setup
     {
-        static Harmony harmony;
-
+        internal static Harmony harmony;
         public static readonly float defaultMinTemp;
         public static readonly float defaultMaxTemp;
         public static float globalMinTempOffset = 0f;
         public static float globalMaxTempOffset = 0f;
-
         static Setup()
         {
-            // Setting up Harmony
             if (harmony != null)
                 return;
 
             LogUtility.Log($"Initializing Celsius {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}...", LogLevel.Important);
 
             harmony = new Harmony("Garwel.Celsius");
-            Type type = typeof(Setup);
+            ApplyHarmonyPatches();
+            LogUtility.Log($"Harmony initialization complete.", LogLevel.Important);
 
+            StatDef minTemp = DefDatabase<StatDef>.GetNamed("MinTemp");
+            StatDef maxTemp = DefDatabase<StatDef>.GetNamed("MaxTemp");
+
+            defaultMinTemp = minTemp != null ? minTemp.defaultBaseValue : 9f;
+            defaultMaxTemp = maxTemp != null ? maxTemp.defaultBaseValue : 35f;
+
+            // Adding CompThermal to all applicable Things
+            List<ThingThermalProperties> ttpList;
+            foreach (ThingDef def in DefDatabase<ThingDef>.AllDefs.Where(def => CompThermal.ShouldApplyTo(def)))
+            {
+                def.comps.Add(new CompProperties(typeof(CompThermal)));
+                if ((ttpList = def.modExtensions.OfType<ThingThermalProperties>().ToList()).Count > 1)
+                    LogUtility.Log($"{def.defName} has {ttpList.Count} ThingThermalProperties extensions:\n{ttpList.Select(ttp => ttp.ToString()).ToLineList("- ")}", LogLevel.Warning);
+            }
+
+            if (Settings.DebugMode)
+                foreach (TerrainDef def in DefDatabase<TerrainDef>.AllDefs)
+                {
+                    TerrainThermalProperties terrainThermalProps = def.GetTerrainThermalProperties();
+                    if (terrainThermalProps != null)
+                        LogUtility.Log($"Terrain {def.defName}. {terrainThermalProps}");
+                }
+
+            TemperatureUtility.SettingsChanged();
+        }
+
+        public static bool IsHarmonyPatched => harmony.GetPatchedMethods().Any();
+
+        public static void ApplyHarmonyPatches()
+        {
+            Type type = typeof(Setup);
+            RemoveHarmonyPatches();
             harmony.Patch(
                 AccessTools.Method("Verse.GenTemperature:TryGetDirectAirTemperatureForCell"),
-                prefix: new HarmonyMethod(type.GetMethod($"GenTemperature_TryGetDirectAirTemperatureForCell")));
+                prefix: new HarmonyMethod(type.GetMethod("GenTemperature_TryGetDirectAirTemperatureForCell")));
             harmony.Patch(
                 AccessTools.PropertyGetter(typeof(Room), "Temperature"),
                 prefix: new HarmonyMethod(type.GetMethod("Room_Temperature_get")));
@@ -54,7 +82,10 @@ namespace Celsius
             #endregion
             harmony.Patch(
                 AccessTools.Method("Verse.GenTemperature:PushHeat", new Type[] { typeof(IntVec3), typeof(Map), typeof(float) }),
-                prefix: new HarmonyMethod(type.GetMethod("GenTemperature_PushHeat")));
+                prefix: new HarmonyMethod(type.GetMethod("GenTemperature_PushHeat_IntVec3")));
+            harmony.Patch(
+                AccessTools.Method("Verse.GenTemperature:PushHeat", new Type[] { typeof(Thing), typeof(float) }),
+                prefix: new HarmonyMethod(type.GetMethod("GenTemperature_PushHeat_Thing")));
             harmony.Patch(
                 AccessTools.Method("Verse.GenTemperature:ControlTemperatureTempChange"),
                 postfix: new HarmonyMethod(type.GetMethod("GenTemperature_ControlTemperatureTempChange")));
@@ -85,28 +116,14 @@ namespace Celsius
             harmony.Patch(
                 AccessTools.Method("RimWorld.CompRitualFireOverlay:CompTick"),
                 postfix: new HarmonyMethod(type.GetMethod("CompRitualFireOverlay_CompTick")));
-
-            LogUtility.Log($"Harmony initialization complete.");
-
-            StatDef minTemp = DefDatabase<StatDef>.GetNamed("MinTemp");
-            StatDef maxTemp = DefDatabase<StatDef>.GetNamed("MaxTemp");
-
-            defaultMinTemp = minTemp != null ? minTemp.defaultBaseValue : 9f;
-            defaultMaxTemp = maxTemp != null ? maxTemp.defaultBaseValue : 35f;
-
-            // Adding CompThermal and ThingThermalProperties to all applicable Things
-            foreach (ThingDef def in DefDatabase<ThingDef>.AllDefs.Where(def => CompThermal.ShouldApplyTo(def)))
-            {
-                if (def.IsMeat)
-                {
-                    if (def.modExtensions == null)
-                        def.modExtensions = new List<DefModExtension>();
-                }
-                def.comps.Add(new CompProperties(typeof(CompThermal)));
-            }
-
-            TemperatureUtility.SettingsChanged();
+            if (AccessTools.Method("VanillaVehiclesExpanded.GarageDoor:SpawnGarage") != null)
+                harmony.Patch(
+                    AccessTools.Method("VanillaVehiclesExpanded.GarageDoor:SpawnGarage"),
+                    postfix: new HarmonyMethod(type.GetMethod("VVE_GarageDoor_SpawnGarage")));
         }
+
+        public static void RemoveHarmonyPatches() => harmony.UnpatchAll("Garwel.Celsius");
+
 		#region HSK
         // Replaces GenTemperature.TryGetDirectAirTemperatureForCell by providing cell-specific temperature
         public static bool GenTemperature_TryGetDirectAirTemperatureForCell(ref bool __result, IntVec3 c, Map map, out float temperature)
@@ -285,7 +302,7 @@ namespace Celsius
         // Replaces Room.Temperature with room's average temperature (e.g. for displaying in the bottom right corner)
         public static bool Room_Temperature_get(ref float __result, Room __instance)
         {
-            if (__instance.Map.TemperatureInfo() == null)
+            if (__instance?.Map?.TemperatureInfo() == null)
                 return true;
             __result = __instance.GetTemperature();
             return false;
@@ -383,6 +400,31 @@ namespace Celsius
             return false;
         }
 
+        // Replaces GenTemperature.PushHeat(IntVec3, Map, float) to change temperature at the specific cell instead of the whole room
+        public static bool GenTemperature_PushHeat_IntVec3(ref bool __result, IntVec3 c, Map map, float energy) => __result = TemperatureUtility.TryPushHeat(c, map, energy);
+
+        // Replaces GenTemperature.PushHeat(Thing, float) to push heat evenly from big things (e.g. geysers)
+        public static bool GenTemperature_PushHeat_Thing(Thing t, float energy)
+        {
+            TemperatureInfo temperatureInfo = t.MapHeld?.TemperatureInfo();
+            if (temperatureInfo == null)
+            {
+                LogUtility.Log($"TemperatureInfo unavailable for map {t.MapHeld} where {t} is held!", LogLevel.Warning);
+                return true;
+            }
+            if (t.def.Size == IntVec2.One)
+            {
+                temperatureInfo.PushHeat(t.PositionHeld, energy);
+                return false;
+            }
+            CellRect cells = t.OccupiedRect();
+            energy /= t.def.Size.Area;
+            for (int x = cells.minX; x <= cells.maxX; x++)
+                for (int z = cells.minZ; z <= cells.maxZ; z++)
+                    temperatureInfo.PushHeat(new IntVec3(x, 0, z), energy);
+            return false;
+        }
+
         public static bool Applies(Thing t) => t.Spawned && Applies_Patch(t.def, t.Map, t.Position);
 
         public static void CompInspectStringExtra_Patch(ref string __result, CompReportWorkSpeed __instance)
@@ -401,9 +443,6 @@ namespace Celsius
 
         }
 		#endregion
-        // Replaces GenTemperature.PushHeat(IntVec3, Map, float) to change temperature at the specific cell instead of the whole room
-        public static bool GenTemperature_PushHeat(ref bool __result, IntVec3 c, Map map, float energy) => __result = TemperatureUtility.TryPushHeat(c, map, energy);
-
         // Attaches to GenTemperature.ControlTemperatureTempChange to implement heat pushing for temperature control things (Heater, Cooler, Vent)
         public static float GenTemperature_ControlTemperatureTempChange(float result, IntVec3 cell, Map map, float energyLimit, float targetTemperature)
         {
@@ -438,7 +477,7 @@ namespace Celsius
                     float temperature = temperatureInfo.GetIgnitionTemperatureForCell(__instance.Position);
                     if (temperature < temperatureInfo.GetTemperatureForCell(__instance.Position))
                     {
-                    LogUtility.Log($"Setting temperature at {__instance.Position} to {temperature:F0}C...");
+                        LogUtility.Log($"Setting temperature at {__instance.Position} to {temperature:F0}C...");
                         temperatureInfo.SetTemperatureForCell(__instance.Position, temperature);
                     }
                 }
@@ -486,7 +525,7 @@ namespace Celsius
         public static bool GlobalControls_TemperatureString(ref string __result)
         {
             IntVec3 cell = UI.MouseCell();
-            TemperatureInfo temperatureInfo = Find.CurrentMap.TemperatureInfo();
+            TemperatureInfo temperatureInfo = Find.CurrentMap?.TemperatureInfo();
             if (temperatureInfo == null || !cell.InBounds(Find.CurrentMap) || cell.Fogged(Find.CurrentMap))
                 return true;
             __result = temperatureInfo.GetTemperatureForCell(cell).ToStringTemperature(Settings.TemperatureDisplayFormatString);
@@ -503,7 +542,7 @@ namespace Celsius
         // When door is opening, update its state and thermal values
         public static void Building_Door_DoorOpen(Building_Door __instance)
         {
-            CompThermal compThermal = __instance.TryGetComp<CompThermal>();
+            CompThermal compThermal = __instance?.TryGetComp<CompThermal>();
             if (compThermal != null)
                 compThermal.IsOpen = true;
         }
@@ -513,7 +552,7 @@ namespace Celsius
         {
             if (__result)
             {
-                CompThermal compThermal = __instance.TryGetComp<CompThermal>();
+                CompThermal compThermal = __instance?.TryGetComp<CompThermal>();
                 if (compThermal != null)
                     compThermal.IsOpen = false;
             }
@@ -526,6 +565,20 @@ namespace Celsius
         {
             if (GenTicks.TicksAbs % 60 == 0 && __instance.FireSize > 0)
                 TemperatureUtility.TryPushHeat(__instance.parent.Position, __instance.parent.Map, __instance.FireSize * HeatPushPerFireSize);
+        }
+
+        // Vanilla Vehicles Expanded: When opening or closing a garage door, update its state and thermal values
+        public static void VVE_GarageDoor_SpawnGarage(Building newGarage)
+        {
+            if (newGarage == null)
+            {
+                LogUtility.Log($"Error in VVE_GarageDoor_SpawnGarage: newGarage is null!", LogLevel.Error);
+                return;
+            }
+            CompThermal compThermal = newGarage.TryGetComp<CompThermal>();
+            if (compThermal != null)
+                compThermal.IsOpen = newGarage.def.defName.EndsWith("Opened");
+            else LogUtility.Log($"There is no CompThermal for {newGarage.ThingID}.", LogLevel.Warning);
         }
     }
 }
