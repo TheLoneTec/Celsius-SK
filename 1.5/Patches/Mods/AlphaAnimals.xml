@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Patch>
+
+	<!-- ALPHA ANIMALS -->
+
+	<!-- Stuff -->
+
+	<Operation Class="PatchOperationFindMod">
+	<mods>
+		<li>Alpha Animals</li>
+	</mods>
+		<match Class="PatchOperationSequence">
+			<operations>
+
+			<li Class="PatchOperationAddModExtension">
+				<success>Always</success>
+				<xpath>Defs/ThingDef[defName="GU_RedWood"]</xpath>
+				<value>
+					<li Class="Celsius.StuffThermalProperties">
+						<volumetricHeatCapacity>600</volumetricHeatCapacity>
+						<insulationFactor>1.25</insulationFactor>
+					</li>
+				</value>
+			</li>
+
+			<li Class="PatchOperationAddModExtension">
+				<xpath>Defs/ThingDef[defName="AA_SkySteel"]</xpath>
+				<value>
+					<li Class="Celsius.StuffThermalProperties">
+						<volumetricHeatCapacity>1335</volumetricHeatCapacity>
+						<insulationFactor>0.28</insulationFactor>
+					</li>
+				</value>
+			</li>
+
+			<!-- Ignition data: buildings -->
+
+			<li Class="XmlExtensions.PatchOperationSafeAdd">
+				<success>Always</success>
+				<xpath>Defs/ThingDef[defName="AA_BlueGelBattery"]</xpath>
+				<value>
+					<statBases>
+						<Celsius_IgnitionTemperature>275</Celsius_IgnitionTemperature>
+					</statBases>
+				</value>
+			</li>
+
+			<li Class="XmlExtensions.PatchOperationSafeAdd">
+				<success>Always</success>
+				<xpath>Defs/ThingDef[defName="AA_HexaGelBattery"]</xpath>
+				<value>
+					<statBases>
+						<Celsius_IgnitionTemperature>225</Celsius_IgnitionTemperature>
+					</statBases>
+				</value>
+			</li>
+
+			<!-- Ignition data: stuff -->
+
+			<li Class="XmlExtensions.PatchOperationSafeAdd">
+				<success>Always</success>
+				<xpath>Defs/ThingDef[defName="GU_RedWood"]</xpath>
+				<value>
+					<statBases>
+						<Celsius_IgnitionTemperature>350</Celsius_IgnitionTemperature>
+					</statBases>
+					<stuffProps>
+						<statOffsets>
+							<Celsius_IgnitionTemperature>350</Celsius_IgnitionTemperature>
+						</statOffsets>
+					</stuffProps>
+				</value>
+			</li>
+
+			<li Class="XmlExtensions.PatchOperationSafeAdd">
+				<success>Always</success>
+				<xpath>Defs/ThingDef[defName="AA_BlueGel"]</xpath>
+				<value>
+					<statBases>
+						<Celsius_IgnitionTemperature>275</Celsius_IgnitionTemperature>
+					</statBases>
+					<stuffProps>
+						<statOffsets>
+							<Celsius_IgnitionTemperature>275</Celsius_IgnitionTemperature>
+						</statOffsets>
+					</stuffProps>
+				</value>
+			</li>
+
+			<li Class="XmlExtensions.PatchOperationSafeAdd">
+				<success>Always</success>
+				<xpath>Defs/ThingDef[defName="AA_Hexagel"]</xpath>
+				<value>
+					<statBases>
+						<Celsius_IgnitionTemperature>225</Celsius_IgnitionTemperature>
+					</statBases>
+					<stuffProps>
+						<statOffsets>
+							<Celsius_IgnitionTemperature>225</Celsius_IgnitionTemperature>
+						</statOffsets>
+					</stuffProps>
+				</value>
+			</li>
+
+			<li Class="XmlExtensions.PatchOperationSafeAdd">
+				<success>Always</success>
+				<xpath>Defs/ThingDef[defName="AA_HexagelCore"]</xpath>
+				<value>
+					<statBases>
+						<Celsius_IgnitionTemperature>300</Celsius_IgnitionTemperature>
+					</statBases>
+					<stuffProps>
+						<statOffsets>
+							<Celsius_IgnitionTemperature>300</Celsius_IgnitionTemperature>
+						</statOffsets>
+					</stuffProps>
+				</value>
+			</li>
+
+			</operations>
+		</match>
+	</Operation>
+
+</Patch>
