@@ -36,6 +36,12 @@
 				</value>
 			</li>
 
+			<li Class="PatchOperationAttributeSet">
+				<xpath>Defs/ThingDef[defName="GU_BlocksRoseQuartz"]/modExtensions</xpath>
+				<attribute>Inherit</attribute>
+				<value>false</value>
+			</li>
+
 			<li Class="PatchOperationAddModExtension">
 				<xpath>Defs/ThingDef[defName="AB_ChunkObsidian"]</xpath>
 				<value>
@@ -46,6 +52,12 @@
 				</value>
 			</li>
 
+			<li Class="PatchOperationAttributeSet">
+				<xpath>Defs/ThingDef[defName="AB_ChunkObsidian"]/modExtensions</xpath>
+				<attribute>Inherit</attribute>
+				<value>false</value>
+			</li>
+
 			<li Class="PatchOperationAddModExtension">
 				<xpath>Defs/ThingDef[defName="AB_BlocksMudstone"]</xpath>
 				<value>
@@ -54,6 +66,12 @@
 						<insulationFactor>0.97</insulationFactor>
 					</li>
 				</value>
+			</li>
+
+			<li Class="PatchOperationAttributeSet">
+				<xpath>Defs/ThingDef[defName="AB_BlocksMudstone"]/modExtensions</xpath>
+				<attribute>Inherit</attribute>
+				<value>false</value>
 			</li>
 
 			<!-- Stuff Other -->

@@ -83,7 +83,8 @@
 			</li>
 			
 			<li Class="PatchOperationAddModExtension">
-				<xpath>Defs/ThingDef[@Name="LTS_FuturisticDoor"]</xpath>
+				<xpath>Defs/ThingDef[defName="LTS_FuturisticDoorOne" or defName="LTS_FuturisticDoorTwo" or defName="LTS_LargeFuturisticDoor" or defName="LTS_AssymetricDoorOne"
+				 or defName="LTS_AssymetricDoorTwo" or defName="LTS_AssymetricReinforcedDoorOne" or defName="LTS_AssymetricReinforcedDoorTwo"]</xpath>
 				<value>
 					<li Class="Celsius.ThingThermalProperties">
 						<heatCapacity>6.75</heatCapacity>
