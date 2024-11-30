@@ -36,7 +36,7 @@
 				</value>
 			</li>
 
-			<li Class="PatchOperationAttributeAdd">
+			<li Class="PatchOperationAttributeSet">
 				<xpath>Defs/ThingDef[defName="GU_BlocksRoseQuartz"]/modExtensions</xpath>
 				<attribute>Inherit</attribute>
 				<value>false</value>
@@ -52,7 +52,7 @@
 				</value>
 			</li>
 
-			<li Class="PatchOperationAttributeAdd">
+			<li Class="PatchOperationAttributeSet">
 				<xpath>Defs/ThingDef[defName="AB_BlocksObsidian"]/modExtensions</xpath>
 				<attribute>Inherit</attribute>
 				<value>false</value>
@@ -68,7 +68,7 @@
 				</value>
 			</li>
 
-			<li Class="PatchOperationAttributeAdd">
+			<li Class="PatchOperationAttributeSet">
 				<xpath>Defs/ThingDef[defName="AB_BlocksMudstone"]/modExtensions</xpath>
 				<attribute>Inherit</attribute>
 				<value>false</value>
