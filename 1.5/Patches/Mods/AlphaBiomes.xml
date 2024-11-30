@@ -36,14 +36,14 @@
 				</value>
 			</li>
 
-			<li Class="PatchOperationAttributeSet">
+			<li Class="PatchOperationAttributeAdd">
 				<xpath>Defs/ThingDef[defName="GU_BlocksRoseQuartz"]/modExtensions</xpath>
 				<attribute>Inherit</attribute>
 				<value>false</value>
 			</li>
 
 			<li Class="PatchOperationAddModExtension">
-				<xpath>Defs/ThingDef[defName="AB_ChunkObsidian"]</xpath>
+				<xpath>Defs/ThingDef[defName="AB_BlocksObsidian"]</xpath>
 				<value>
 					<li Class="Celsius.StuffThermalProperties">
 						<volumetricHeatCapacity>1500</volumetricHeatCapacity>
@@ -52,8 +52,8 @@
 				</value>
 			</li>
 
-			<li Class="PatchOperationAttributeSet">
-				<xpath>Defs/ThingDef[defName="AB_ChunkObsidian"]/modExtensions</xpath>
+			<li Class="PatchOperationAttributeAdd">
+				<xpath>Defs/ThingDef[defName="AB_BlocksObsidian"]/modExtensions</xpath>
 				<attribute>Inherit</attribute>
 				<value>false</value>
 			</li>
@@ -68,7 +68,7 @@
 				</value>
 			</li>
 
-			<li Class="PatchOperationAttributeSet">
+			<li Class="PatchOperationAttributeAdd">
 				<xpath>Defs/ThingDef[defName="AB_BlocksMudstone"]/modExtensions</xpath>
 				<attribute>Inherit</attribute>
 				<value>false</value>
