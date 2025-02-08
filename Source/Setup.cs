@@ -442,7 +442,7 @@ namespace Celsius
                 currentTemp = t.Position.GetTemperatureForCell(t.MapHeld);
                 maxHeatPusherTemp = p.Props.heatPushMaxTemperature;
 
-                if (currentTemp > maxHeatPusherTemp && currentTemp - maxHeatPusherTemp > 500 && !Prefs.DevMode)
+                if (currentTemp > maxHeatPusherTemp && currentTemp - maxHeatPusherTemp > 1000 && !Prefs.DevMode)
                 {
                     Log.WarningOnce("Celsius SK: Possible Heat Pooling Error at: " + t.Position + " from " + t.def.defName + ". Resetting.",t.thingIDNumber);
                     i.SetTemperatureForCell(t.Position, maxHeatPusherTemp);
