@@ -399,6 +399,7 @@ namespace Celsius
             }
             return false;
         }
+        #endregion
 
         // Replaces GenTemperature.PushHeat(IntVec3, Map, float) to change temperature at the specific cell instead of the whole room
         public static bool GenTemperature_PushHeat_IntVec3(ref bool __result, IntVec3 c, Map map, float energy) => __result = TemperatureUtility.TryPushHeat(c, map, energy);
@@ -412,6 +413,10 @@ namespace Celsius
                 LogUtility.Log($"TemperatureInfo unavailable for map {t.MapHeld} where {t} is held!", LogLevel.Warning);
                 return true;
             }
+            if (t != null && AnomalyCheck(t, temperatureInfo)) // HSK - check for heat pooling error
+            {
+                return false;
+            }
             if (t.def.Size == IntVec2.One)
             {
                 temperatureInfo.PushHeat(t.PositionHeld, energy);
@@ -422,6 +427,30 @@ namespace Celsius
             for (int x = cells.minX; x <= cells.maxX; x++)
                 for (int z = cells.minZ; z <= cells.maxZ; z++)
                     temperatureInfo.PushHeat(new IntVec3(x, 0, z), energy);
+            return false;
+        }
+
+        #region HSK
+
+        public static bool AnomalyCheck(Thing t, TemperatureInfo i)
+        {
+            CompHeatPusher p = t.TryGetComp<CompHeatPusher>();
+            float currentTemp;
+            float maxHeatPusherTemp;
+            if (p != null)
+            {
+                currentTemp = t.Position.GetTemperatureForCell(t.MapHeld);
+                maxHeatPusherTemp = p.Props.heatPushMaxTemperature;
+
+                if (currentTemp > maxHeatPusherTemp && currentTemp - maxHeatPusherTemp > 500 && !Prefs.DevMode)
+                {
+                    Log.WarningOnce("Celsius SK: Possible Heat Pooling Error at: " + t.Position + " from " + t.def.defName + ". Resetting.",t.thingIDNumber);
+                    i.SetTemperatureForCell(t.Position, maxHeatPusherTemp);
+                    TemperatureUtility.SettingsChanged();
+                    return true;
+                }
+            }
+
             return false;
         }
 
@@ -442,7 +471,8 @@ namespace Celsius
            // Log.Message("Method Exited");
 
         }
-		#endregion
+		      #endregion
+
         // Attaches to GenTemperature.ControlTemperatureTempChange to implement heat pushing for temperature control things (Heater, Cooler, Vent)
         public static float GenTemperature_ControlTemperatureTempChange(float result, IntVec3 cell, Map map, float energyLimit, float targetTemperature)
         {
@@ -466,7 +496,7 @@ namespace Celsius
         // Disables vanilla snow melting
         public static float SteadyEnvironmentEffects_MeltAmountAt(float result, float temperature) => 0;
 
-        // Attaches to AttachableThing.Destroy to reduce temperature when a Fire is destroyed to the ignition temperature
+        // Attaches to AttachableThing.Destroy to reduce temperature to just below the ignition temperature, when a Fire is destroyed
         public static void AttachableThing_Destroy(AttachableThing __instance)
         {
             if (Settings.AutoignitionEnabled && __instance is Fire)
@@ -474,11 +504,12 @@ namespace Celsius
                 TemperatureInfo temperatureInfo = __instance.Map?.TemperatureInfo();
                 if (temperatureInfo != null)
                 {
-                    float temperature = temperatureInfo.GetIgnitionTemperatureForCell(__instance.Position);
-                    if (temperature < temperatureInfo.GetTemperatureForCell(__instance.Position))
+                    int index = __instance.Map.cellIndices.CellToIndex(__instance.Position);
+                    float temperature = temperatureInfo.GetIgnitionTemperatureForCell(index) - 1;
+                    if (temperature < temperatureInfo.GetTemperatureForCell(index))
                     {
                         LogUtility.Log($"Setting temperature at {__instance.Position} to {temperature:F0}C...");
-                        temperatureInfo.SetTemperatureForCell(__instance.Position, temperature);
+                        temperatureInfo.SetTemperatureForCell(index, temperature);
                     }
                 }
             }
@@ -524,14 +555,17 @@ namespace Celsius
         // Replaces temperature display in the global controls view (bottom right)
         public static bool GlobalControls_TemperatureString(ref string __result)
         {
-            IntVec3 cell = UI.MouseCell();
-            TemperatureInfo temperatureInfo = Find.CurrentMap?.TemperatureInfo();
-            if (temperatureInfo == null || !cell.InBounds(Find.CurrentMap) || cell.Fogged(Find.CurrentMap))
+            Map map = Find.CurrentMap;
+            if (map == null)
                 return true;
-            __result = temperatureInfo.GetTemperatureForCell(cell).ToStringTemperature(Settings.TemperatureDisplayFormatString);
+            int index = map.cellIndices.CellToIndex(UI.MouseCell());
+            TemperatureInfo temperatureInfo = map.TemperatureInfo();
+            if (temperatureInfo == null || !temperatureInfo.InBounds(index) || map.fogGrid.IsFogged(index))
+                return true;
+            __result = temperatureInfo.GetTemperatureForCell(index).ToStringTemperature(Settings.TemperatureDisplayFormatString);
             if (temperatureInfo.HasTerrainTemperatures)
             {
-                float terrainTemperature = temperatureInfo.GetTerrainTemperature(cell);
+                float terrainTemperature = temperatureInfo.GetTerrainTemperature(index);
                 if (!float.IsNaN(terrainTemperature))
                     // Localization Key: Celsius_Terrain - Terrain
                     __result += $" / {"Celsius_Terrain".Translate()} {terrainTemperature.ToStringTemperature(Settings.TemperatureDisplayFormatString)}";
