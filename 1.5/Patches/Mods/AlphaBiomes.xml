@@ -14,7 +14,7 @@
 			<operations>
 
 			<!-- Stuff : Rocks -->
-
+<!-- Already Patch all thingClass: Mineables
 			<li Class="PatchOperationAddModExtension">
 				<xpath>Defs/ThingDef[@Name="GU_RockBase"]</xpath>
 				<value>
@@ -25,7 +25,7 @@
 					</li>
 				</value>
 			</li>
-
+-->
 			<li Class="PatchOperationAddModExtension">
 				<xpath>Defs/ThingDef[defName="GU_BlocksRoseQuartz"]</xpath>
 				<value>
