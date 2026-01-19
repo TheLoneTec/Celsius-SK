@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Core_SK">
-      <HintPath>E:\Users\kacey\Documents\GitHub\HardcoreSK\Hardcore-SK-Source\R1.5\Assemblies\Core_SK.dll</HintPath>
+      <HintPath>..\..\1.5\Assemblies\Core_SK.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -73,7 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Lib.Harmony">
-      <Version>2.3.3</Version>
+      <Version>2.3.6</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
