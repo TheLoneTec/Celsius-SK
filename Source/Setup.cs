@@ -419,7 +419,7 @@ namespace Celsius
                 LogUtility.Log($"TemperatureInfo unavailable for map {t.MapHeld} where {t} is held!", LogLevel.Warning);
                 return true;
             }
-            if (t != null && AnomalyCheck(t, temperatureInfo)) // HSK - check for heat pooling error
+            if (t != null && AnomalyCheck(t, temperatureInfo, energy)) // HSK - check for heat pooling error
             {
                 return false;
             }
@@ -438,17 +438,24 @@ namespace Celsius
 
         #region HSK
 
-        public static bool AnomalyCheck(Thing t, TemperatureInfo i)
+        public static bool AnomalyCheck(Thing t, TemperatureInfo i, float energy)
         {
             CompHeatPusher p = t.TryGetComp<CompHeatPusher>();
             float currentTemp;
             float maxHeatPusherTemp;
-            if (p != null)
+            if (p != null || t.IsOutside())
             {
                 currentTemp = t.Position.GetTemperatureForCell(t.MapHeld);
                 maxHeatPusherTemp = p.Props.heatPushMaxTemperature;
 
-                if (currentTemp > maxHeatPusherTemp && currentTemp - maxHeatPusherTemp > 1000 && !Prefs.DevMode)
+                if (p == null && currentTemp - (t.MapHeld.mapTemperature.OutdoorTemp + energy) > 1000)
+                {
+                    Log.WarningOnce("Celsius SK: Possible Heat Pooling Error at: " + t.Position + " from " + t.def.defName + ". Resetting.",t.thingIDNumber);
+                    i.SetTemperatureForCell(t.Position, t.MapHeld.mapTemperature.OutdoorTemp);
+                    TemperatureUtility.SettingsChanged();
+                    return true;
+                }
+                else if (currentTemp > maxHeatPusherTemp && currentTemp - maxHeatPusherTemp > 1000)
                 {
                     Log.WarningOnce("Celsius SK: Possible Heat Pooling Error at: " + t.Position + " from " + t.def.defName + ". Resetting.",t.thingIDNumber);
                     i.SetTemperatureForCell(t.Position, maxHeatPusherTemp);
