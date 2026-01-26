@@ -443,19 +443,26 @@ namespace Celsius
             CompHeatPusher p = t.TryGetComp<CompHeatPusher>();
             float currentTemp;
             float maxHeatPusherTemp;
-            if (p != null || t.IsOutside())
-            {
-                currentTemp = t.Position.GetTemperatureForCell(t.MapHeld);
-                maxHeatPusherTemp = p.Props.heatPushMaxTemperature;
 
-                if (p == null && currentTemp - (t.MapHeld.mapTemperature.OutdoorTemp + energy) > 1000)
+            currentTemp = t.Position.GetTemperatureForCell(t.MapHeld);
+
+
+            if (p == null && t.IsOutside())
+            {
+                if (currentTemp - (t.MapHeld.mapTemperature.OutdoorTemp + energy) > 1000)
                 {
                     Log.WarningOnce("Celsius SK: Possible Heat Pooling Error at: " + t.Position + " from " + t.def.defName + ". Resetting.",t.thingIDNumber);
                     i.SetTemperatureForCell(t.Position, t.MapHeld.mapTemperature.OutdoorTemp);
                     TemperatureUtility.SettingsChanged();
                     return true;
                 }
-                else if (currentTemp > maxHeatPusherTemp && currentTemp - maxHeatPusherTemp > 1000)
+            }
+            if (p != null)
+            {
+
+                maxHeatPusherTemp = p.Props.heatPushMaxTemperature;
+
+                if (currentTemp > maxHeatPusherTemp && currentTemp - maxHeatPusherTemp > 1000)
                 {
                     Log.WarningOnce("Celsius SK: Possible Heat Pooling Error at: " + t.Position + " from " + t.def.defName + ". Resetting.",t.thingIDNumber);
                     i.SetTemperatureForCell(t.Position, maxHeatPusherTemp);
